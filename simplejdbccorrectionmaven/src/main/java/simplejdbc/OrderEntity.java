@@ -9,7 +9,7 @@ import java.util.Date;
 
 /**
  *
- * @author Eva
+ * @author Eva 
  */
 public class OrderEntity {
     private int orderId;

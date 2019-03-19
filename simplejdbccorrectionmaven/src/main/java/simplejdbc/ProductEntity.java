@@ -7,7 +7,7 @@ package simplejdbc;
 
 /**
  *
- * @author Eva
+ * @author Eva 
  */
 public class ProductEntity {
 
