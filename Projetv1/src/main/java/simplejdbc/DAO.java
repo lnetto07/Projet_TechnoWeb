@@ -75,32 +75,34 @@ public class DAO {
                     // On crée l'objet entité
                     OrderEntity o = new OrderEntity(num, idCustom, idProd, qtt, shipCost, shipDate, saleDate, freight);
                     // On l'ajoute à la liste des résultats
-                    result.add(o);
+                    commande.add(o);
                 }
             }
         }
-        return result;
+        return commande;
     }
 
-    public OrderEntity ajoutCommande(int num, int idCustom, int idProd, int qtt, float shipCost, Date shipDate, Date saleDate, String freight) throws SQLException {
+    public OrderEntity ajoutCommande(OrderEntity order) throws SQLException {
         String sql = "INSERT INTO PURCHASE_ORDER VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection connection = myDataSource.getConnection();
                 PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setInt(1, num);
-            stmt.setInt(2, idCustom);
-            stmt.setInt(3, idProd);
-            stmt.setInt(4, qtt);
-            stmt.setFloat(5, shipCost);
-            stmt.setDate(6, (java.sql.Date) shipDate);
-            stmt.setDate(7, (java.sql.Date) saleDate);
-            stmt.setString(8, freight);
-            result = stmt.executeUpdate();
-        }
-        return result;
+            stmt.setInt(1, order.getOrderId());
+            stmt.setInt(2, order.getCustomerId());
+            stmt.setInt(3, order.getProductId());
+            stmt.setInt(4, order.getQty());
+            stmt.setFloat(5, order.getShipCost());
+            stmt.setDate(6, (java.sql.Date) order.getSalesDate());
+            stmt.setDate(7, (java.sql.Date) order.getShipDate());
+            stmt.setString(8, order.getFCompany());
+            stmt.executeUpdate();}
+            OrderEntity o = new OrderEntity(order.getOrderId() , order.getCustomerId(), order.getProductId(), order.getQty(), order.getShipCost(), order.getSalesDate(), order.getShipDate(), order.getFCompany());
+        
+        return o;
     }
 
     public OrderEntity selectCommande(int num) throws SQLException {
         String sql = "SELECT * FROM PURCHASE_ORDER WHERE ORDER_NUM=? ";
+        
         try (Connection connection = myDataSource.getConnection();
                 PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, num);
@@ -115,32 +117,32 @@ public class DAO {
             // On crée l'objet entité
             OrderEntity o = new OrderEntity(num, idCustom, idProd, qtt, shipCost, shipDate, saleDate, freight);
             // On l'ajoute à la liste des résultats
-            result.add(o);
-            result = stmt.add(o);
+           return o;
         }
-        return result;
     }
     
     public OrderEntity modifCommande(OrderEntity order) throws SQLException {
-        String sql = "SELECT * FROM PURCHASE_ORDER WHERE ORDER_NUM=? ";
-        try (Connection connection = myDataSource.getConnection();
-                PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setInt(1, num);
-            ResultSet rs = stmt.executeQuery();
-            int idCustom = rs.getInt("CUSTOMER_ID");
-            int idProd = rs.getInt("PRODUCT_ID");
-            int qtt = rs.getInt("QUANTITY");
-            float shipCost = rs.getFloat("SHIPPING_COST");
-            Date shipDate = rs.getDate("SHIPPING_DATE");
-            Date saleDate = rs.getDate("SALES_DATE");
-            String freight = rs.getString("FREIGHT_COMPAGNY");
-            // On crée l'objet entité
-            OrderEntity o = new OrderEntity(num, idCustom, idProd, qtt, shipCost, shipDate, saleDate, freight);
-            // On l'ajoute à la liste des résultats
-            result.add(o);
-            result = stmt.add(o);
-        }
-        return result;
+        
+//        copie de la méthode précédente
+//        String sql = "SELECT * FROM PURCHASE_ORDER WHERE ORDER_NUM=? ";
+//        try (Connection connection = myDataSource.getConnection();
+//                PreparedStatement stmt = connection.prepareStatement(sql)) {
+//            stmt.setInt(1, num);
+//            ResultSet rs = stmt.executeQuery();
+//            int idCustom = rs.getInt("CUSTOMER_ID");
+//            int idProd = rs.getInt("PRODUCT_ID");
+//            int qtt = rs.getInt("QUANTITY");
+//            float shipCost = rs.getFloat("SHIPPING_COST");
+//            Date shipDate = rs.getDate("SHIPPING_DATE");
+//            Date saleDate = rs.getDate("SALES_DATE");
+//            String freight = rs.getString("FREIGHT_COMPAGNY");
+//            // On crée l'objet entité
+//            OrderEntity o = new OrderEntity(num, idCustom, idProd, qtt, shipCost, shipDate, saleDate, freight);
+//            // On l'ajoute à la liste des résultats
+//            result.add(o);
+//            result = stmt.add(o);
+//        }
+//        return result;
     }
 
 }
