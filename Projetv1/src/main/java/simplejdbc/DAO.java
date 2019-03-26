@@ -144,5 +144,15 @@ public class DAO {
 //        }
 //        return result;
     }
-
+    
+    public String supprimerCommande(OrderEntity order) throws SQLException {
+        String sql = "DELETE FROM PURCHASE_ORDER WHERE ORDER_NUM=?";
+        try (Connection connection = myDataSource.getConnection();
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, order.getOrderId());
+            stmt.executeUpdate();
+            String s= "La commande a été supprimée";
+        return s;
+    }
+}
 }
