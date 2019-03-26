@@ -20,7 +20,7 @@
 			login (admin@admin.com) :<input type="text" title="Username" placeholder="Identifiant" name='loginParam' /> <br>
 			password (admin): <input type="password" title="username" placeholder="Mot de passe" name='passwordParam' /> <br>
 			<!--<input type='submit' name='action' value='login'>-->
-                        <button type="submit" class="btn">Connexion</button>
+                        <button type="submit" class="btn" name='action' value='login'>Connexion</button>
 		</form>
 		<!-- On montre le nombre d'utilisateurs connectés -->
 		<!-- Cette information est stockée dans le scope "application" par le listener -->
