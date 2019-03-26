@@ -4,37 +4,28 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<title>Please login</title>
+		<meta charset="UTF-8" />
+                <title>PAGE D'ACCUEIL</title>
+                <link rel="stylesheet" media="screen" href="v2.css" type="text/css"/>
 	</head>
 	<body>
-		<div>
-			Cet exemple illustre :
-<!--			<ul>
-				<li>La <a href="https://openclassrooms.com/courses/creez-votre-application-web-avec-java-ee/la-session-connectez-vos-clients" target="_blank">gestion des sessions</a></li>
-				<li>Le <a href="https://www.ibm.com/support/knowledgecenter/en/SSZLC2_8.0.0/com.ibm.commerce.admin.doc/tasks/tseurlrewrite.htm" target="_blank">'URL rewriting' pour faire des sessions sans cookies </a></li>
-				<li>La <a href="https://stackoverflow.com/questions/14665037/getting-the-init-parameters-in-a-servlet" target="_blank"> configuration des servlets et des sessions dans "web.xml"</a></li>
-				<li>Les <a href="http://blog.paumard.org/cours/servlet/chap03-servlet-listener.html" target="_blank">listeners </a>(ici, compter le nombre d'utilisateurs connectés)</li>
-				<li>Les <a href="http://blog.paumard.org/cours/servlet/chap04-filtre-mise-en-place.html" target="_blank">filtres </a>(ici, interdire l'accès à un répertoire)</li>
-			</ul>-->
-			<hr>
-		</div>
-
-		<h1>Premier tests basé sur management</h1>
 		
-		<%--
-		La servlet fait : request.setAttribute("errorMessage", "Login/Password incorrect");
-		La JSP récupère cette valeur dans ${errorMessage}
-		--%>
+                <section id="accueil">
+                    <div class="log-form">
+                    <h2>Gestion de commande - Accueil</h2>
+		
 		<div style="color:red">${errorMessage}</div>
 
 		<form action="<c:url value="/" />" method="POST"> <!-- l'action par défaut est l'URL courant, qui va rappeler la servlet -->
-			login (admin@admin.com) : <input name='loginParam'><br>
-			password (admin): <input name='passwordParam' type='password'><br>
-			<input type='submit' name='action' value='login'>
+			login (admin@admin.com) :<input type="text" title="Username" placeholder="Identifiant" name='loginParam' /> <br>
+			password (admin): <input type="password" title="username" placeholder="Mot de passe" name='passwordParam' /> <br>
+			<!--<input type='submit' name='action' value='login'>-->
+                        <button type="submit" class="btn">Connexion</button>
 		</form>
 		<!-- On montre le nombre d'utilisateurs connectés -->
 		<!-- Cette information est stockée dans le scope "application" par le listener -->
 		<h3>Il y a actuellement ${applicationScope.numberConnected} utilisateurs connectés</h3>
+                    </div>
+                </section>
 	</body>
 </html>
