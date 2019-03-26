@@ -32,12 +32,12 @@ public class DAOTest {
         assertEquals(2, commandes.size());
     }
 
-    @Test
+    /*@Test
     public void testAjoutCommande() throws DAOException, SQLException {
         OrderEntity order = new OrderEntity(7, 2, 980001, 4, 650, "2019-02-03", "2019-01-20", "JetLag");
         myDAO.ajoutCommande(order);
         String clientName = "New Entreprises";
         List<OrderEntity> commandes = myDAO.commandesExistantes(clientName);
         assertEquals(3, commandes.size());
-    }
+    }*/
 }
