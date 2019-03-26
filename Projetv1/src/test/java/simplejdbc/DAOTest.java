@@ -39,6 +39,5 @@ public class DAOTest {
         String clientName = "New Entreprises";
         List<OrderEntity> commandes = myDAO.commandesExistantes(clientName);
         assertEquals(3, commandes.size());
-
     }
 }
