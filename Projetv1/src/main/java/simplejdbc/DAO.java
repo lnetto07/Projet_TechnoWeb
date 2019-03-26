@@ -57,7 +57,7 @@ public class DAO {
     public List<OrderEntity> commandesExistantes(String clientName) throws SQLException {
         List<OrderEntity> commande = new LinkedList<>();
         // Une requête SQL paramétrée
-        String sql = "SELECT * FROM PURCHASE_ORDER WHERE CUSTOMER_ID=(SELECT CUSTOMER_ID FROM CUSTOMER WHERE NAME=? ";
+        String sql = "SELECT * FROM PURCHASE_ORDER WHERE CUSTOMER_ID=(SELECT CUSTOMER_ID FROM CUSTOMER WHERE NAME=?) ";
         try (Connection connection = myDataSource.getConnection();
                 PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, clientName);
