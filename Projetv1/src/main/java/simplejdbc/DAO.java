@@ -54,13 +54,13 @@ public class DAO {
         return result;
     }
 
-    public List<OrderEntity> commandesExistantes(CustomerEntity client) throws SQLException {
+    public List<OrderEntity> commandesExistantes(String clientName) throws SQLException {
         List<OrderEntity> commande = new LinkedList<>();
         // Une requête SQL paramétrée
-        String sql = "SELECT * FROM PURCHASE_ORDER WHERE CUSTOMER_ID=? ";
+        String sql = "SELECT * FROM PURCHASE_ORDER WHERE CUSTOMER_ID=(SELECT CUSTOMER_ID FROM CUSTOMER WHERE NAME=? ";
         try (Connection connection = myDataSource.getConnection();
                 PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setInt(1, client.getCustomerId());
+            stmt.setString(1, clientName);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     // On récupère les champs nécessaires de l'enregistrement courant
@@ -69,8 +69,8 @@ public class DAO {
                     int idProd = rs.getInt("PRODUCT_ID");
                     int qtt = rs.getInt("QUANTITY");
                     float shipCost = rs.getFloat("SHIPPING_COST");
-                    Date shipDate = rs.getDate("SHIPPING_DATE");
-                    Date saleDate = rs.getDate("SALES_DATE");
+                    String shipDate = rs.getString("SHIPPING_DATE");
+                    String saleDate = rs.getString("SALES_DATE");
                     String freight = rs.getString("FREIGHT_COMPAGNY");
                     // On crée l'objet entité
                     OrderEntity o = new OrderEntity(num, idCustom, idProd, qtt, shipCost, shipDate, saleDate, freight);
@@ -91,8 +91,8 @@ public class DAO {
             stmt.setInt(3, order.getProductId());
             stmt.setInt(4, order.getQty());
             stmt.setFloat(5, order.getShipCost());
-            stmt.setDate(6, (java.sql.Date) order.getSalesDate());
-            stmt.setDate(7, (java.sql.Date) order.getShipDate());
+            stmt.setString(6, order.getSalesDate());
+            stmt.setString(7, order.getShipDate());
             stmt.setString(8, order.getFCompany());
             stmt.executeUpdate();}
             OrderEntity o = new OrderEntity(order.getOrderId() , order.getCustomerId(), order.getProductId(), order.getQty(), order.getShipCost(), order.getSalesDate(), order.getShipDate(), order.getFCompany());
@@ -111,8 +111,8 @@ public class DAO {
             int idProd = rs.getInt("PRODUCT_ID");
             int qtt = rs.getInt("QUANTITY");
             float shipCost = rs.getFloat("SHIPPING_COST");
-            Date shipDate = rs.getDate("SHIPPING_DATE");
-            Date saleDate = rs.getDate("SALES_DATE");
+            String shipDate = rs.getString("SHIPPING_DATE");
+            String saleDate = rs.getString("SALES_DATE");
             String freight = rs.getString("FREIGHT_COMPAGNY");
             // On crée l'objet entité
             OrderEntity o = new OrderEntity(num, idCustom, idProd, qtt, shipCost, shipDate, saleDate, freight);
@@ -121,7 +121,7 @@ public class DAO {
         }
     }
     
-    public OrderEntity modifCommande(OrderEntity order) throws SQLException {
+//    public OrderEntity modifCommande(OrderEntity order) throws SQLException {
         
 //        copie de la méthode précédente
 //        String sql = "SELECT * FROM PURCHASE_ORDER WHERE ORDER_NUM=? ";
@@ -143,7 +143,7 @@ public class DAO {
 //            result = stmt.add(o);
 //        }
 //        return result;
-    }
+//    }
     
     public String supprimerCommande(OrderEntity order) throws SQLException {
         String sql = "DELETE FROM PURCHASE_ORDER WHERE ORDER_NUM=?";

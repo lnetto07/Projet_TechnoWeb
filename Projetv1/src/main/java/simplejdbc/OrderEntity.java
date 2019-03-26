@@ -17,12 +17,12 @@ public class OrderEntity {
     private int productId;
     private int qty;
     private float shipCost;
-    private Date salesDate;
-    private Date shipDate;
+    private String salesDate;
+    private String shipDate;
     private String fCompany;
     
 
-    public OrderEntity(int orderId, int customerId, int productId, int qty, float shipCost, Date salesDate, Date shipDate, String fCompany) {
+    public OrderEntity(int orderId, int customerId, int productId, int qty, float shipCost, String salesDate, String shipDate, String fCompany) {
         this.orderId = orderId;
         this.customerId = customerId;
         this.productId = productId;
@@ -53,11 +53,11 @@ public class OrderEntity {
         return shipCost;
     }
     
-    public Date getSalesDate() {
+    public String getSalesDate() {
         return salesDate;
     }
     
-    public Date getShipDate() {
+    public String getShipDate() {
         return shipDate;
     }
     
@@ -65,4 +65,5 @@ public class OrderEntity {
         return fCompany;
     }
        
+
 }
