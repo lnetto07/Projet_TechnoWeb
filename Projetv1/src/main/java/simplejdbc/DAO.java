@@ -4,8 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
@@ -71,7 +69,7 @@ public class DAO {
                     float shipCost = rs.getFloat("SHIPPING_COST");
                     String shipDate = rs.getString("SHIPPING_DATE");
                     String saleDate = rs.getString("SALES_DATE");
-                    String freight = rs.getString("FREIGHT_COMPAGNY");
+                    String freight = rs.getString("FREIGHT_COMPANY");
                     // On crée l'objet entité
                     OrderEntity o = new OrderEntity(num, idCustom, idProd, qtt, shipCost, shipDate, saleDate, freight);
                     // On l'ajoute à la liste des résultats
@@ -145,11 +143,12 @@ public class DAO {
 //        return result;
 //    }
     
-    public String supprimerCommande(OrderEntity order) throws SQLException {
+    public String supprimerCommande(int num) throws SQLException {
         String sql = "DELETE FROM PURCHASE_ORDER WHERE ORDER_NUM=?";
+        
         try (Connection connection = myDataSource.getConnection();
                 PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setInt(1, order.getOrderId());
+            stmt.setInt(1, num);
             stmt.executeUpdate();
             String s= "La commande a été supprimée";
         return s;
