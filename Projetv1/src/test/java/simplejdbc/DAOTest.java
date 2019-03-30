@@ -49,5 +49,18 @@ public class DAOTest {
         assertEquals(3, commandes.size());    
     }
     
+    @Test
+    public void testSelectCommande() throws SQLException{
+        int num=9;
+        OrderEntity o=myDAO.selectCommande(num);
+//       assertEquals(4,o.getQty());
+    }
     
+//    public void testModifCommande() {
+//        int num=9;
+//        int qtt=10;
+//        String fCompany="Postissima";
+//        myDAO.modifCommande(num, qtt, fCompany);
+//        assertEquals(10,)
+//    }
 }

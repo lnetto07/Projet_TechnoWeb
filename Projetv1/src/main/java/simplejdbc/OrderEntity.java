@@ -64,6 +64,13 @@ public class OrderEntity {
     public String getFCompany() {
         return fCompany;
     }
-       
+    public void setQtt(int newQtt){
+        this.qty=newQtt;
+    }
+    
+    public void setFCompany(String newFCompany){
+        this.fCompany=newFCompany;
+    }
+    
 
 }
