@@ -52,6 +52,7 @@ public class DAO {
         return result;
     }
 
+    //Methode DAO interface Client
     public List<OrderEntity> commandesExistantes(String clientName) throws SQLException {
         List<OrderEntity> commande = new LinkedList<>();
         // Une requête SQL paramétrée
@@ -120,7 +121,7 @@ public class DAO {
         }
     }
 
-    public OrderEntity modifCommande(int num, int qtt, String fCompany) throws SQLException {
+    public OrderEntity modifCommande(int num, int qtt, FCompany fCompany) throws SQLException {
         OrderEntity order = selectCommande(num);
         order.setQtt(qtt);
         order.setFCompany(fCompany);
@@ -152,4 +153,42 @@ public class DAO {
             return s;
         }
     }
+
+    // Méthodes DAO interface Administrateur
+    public ProductEntity selectProductById(int id) throws SQLException {
+        String sql = "SELECT * FROM PRODUCT WHERE PRODUCT_ID=? ";
+
+        try (Connection connection = myDataSource.getConnection();
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+            int productId = rs.getInt("PRODUCT_ID");
+            float prix = rs.getFloat("PRICE");
+            String descrip = rs.getString("DESCRIPTION");
+                        // On crée l'objet entité
+            ProductEntity p = new ProductEntity(productId, descrip, prix);
+            // On l'ajoute à la liste des résultats
+            return p;
+        }
+    }
+    
+    
+    public int CAArticle(int idProd, String debut, String fin) throws SQLException {
+        int CA;
+        int qtt;
+        float prix = selectProductById(idProd).getPrice();
+        // Une requête SQL paramétrée
+        String sql = "SELECT SUM(?) FROM PURCHASE_ORDER WHERE PRODUCT_ID=? AND SALES_DATE BETWEEN ? AND ? ";
+        try (Connection connection = myDataSource.getConnection();
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setFloat(1, prix);
+            stmt.setInt(2, idProd);
+            stmt.setString(3, debut);
+            stmt.setString(4, fin);
+            ResultSet rs = stmt.executeQuery();
+            CA=rs;
+        return CA;
+        }
+    }
+
 }

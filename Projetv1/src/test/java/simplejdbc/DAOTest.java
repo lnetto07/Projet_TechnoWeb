@@ -33,7 +33,7 @@ public class DAOTest {
 
     @Test
     public void testAjoutCommande() throws DAOException, SQLException {
-        OrderEntity order = new OrderEntity(7, 2, 980001, 4, 650, "2019-02-03", "2019-01-20", "JetLag");
+        OrderEntity order = new OrderEntity(7, 2, 980001, 4, 650, "2019-02-03", "2019-01-20", FCompany.JetLag.toString());
         myDAO.ajoutCommande(order);
         String clientName = "New Enterprises";
         List<OrderEntity> commandes = myDAO.commandesExistantes(clientName);
@@ -53,13 +53,13 @@ public class DAOTest {
     public void testSelectCommande() throws SQLException{
         int num=9;
         OrderEntity o=myDAO.selectCommande(num);
-//       assertEquals(4,o.getQty());
+        assertEquals(4,o.getQty());
     }
     
 //    public void testModifCommande() {
 //        int num=9;
 //        int qtt=10;
-//        String fCompany="Postissima";
+//        FCompany fCompany=FCompany.Postissimo;
 //        myDAO.modifCommande(num, qtt, fCompany);
 //        assertEquals(10,)
 //    }

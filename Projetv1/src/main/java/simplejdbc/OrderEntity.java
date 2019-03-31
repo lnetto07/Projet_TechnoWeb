@@ -68,8 +68,8 @@ public class OrderEntity {
         this.qty=newQtt;
     }
     
-    public void setFCompany(String newFCompany){
-        this.fCompany=newFCompany;
+    public void setFCompany(FCompany newFCompany){
+        this.fCompany=newFCompany.toString();
     }
     
 
