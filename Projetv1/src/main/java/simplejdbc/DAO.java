@@ -52,7 +52,7 @@ public class DAO {
         return result;
     }
 
-    //Methode DAO interface Client
+    //Methode DAO Client
     public List<OrderEntity> commandesExistantes(String clientName) throws SQLException {
         List<OrderEntity> commande = new LinkedList<>();
         // Une requête SQL paramétrée
@@ -154,7 +154,7 @@ public class DAO {
         }
     }
 
-    // Méthodes DAO interface Administrateur
+    // Méthodes DAO Administrateur
     public ProductEntity selectProductById(int id) throws SQLException {
         String sql = "SELECT * FROM PRODUCT WHERE PRODUCT_ID=? ";
 
