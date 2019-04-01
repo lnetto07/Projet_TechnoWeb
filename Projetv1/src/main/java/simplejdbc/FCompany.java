@@ -10,6 +10,6 @@ package simplejdbc;
  * @author Netto Léa
  */
 public enum FCompany {
-    Postissimo, JetLag,
+    Postissimo, JetLag
     
 }

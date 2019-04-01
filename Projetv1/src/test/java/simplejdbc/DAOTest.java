@@ -56,11 +56,29 @@ public class DAOTest {
         assertEquals(4,o.getQty());
     }
     
-//    public void testModifCommande() {
-//        int num=9;
-//        int qtt=10;
-//        FCompany fCompany=FCompany.Postissimo;
-//        myDAO.modifCommande(num, qtt, fCompany);
-//        assertEquals(10,)
-//    }
+    @Test
+    public void testModifCommande() throws SQLException {
+        int num=9;
+        int qtt=10;
+        OrderEntity o=myDAO.selectCommande(num);
+        FCompany fCompany=FCompany.Postissimo;
+        myDAO.modifCommande(num, qtt, fCompany);
+        assertEquals(10,o.getQty());
+    }
+    
+    @Test
+    public void testSelectDescription() throws SQLException{
+        int id=980001;
+        String description= myDAO.selectDescriptionProd(id);
+        assertEquals(description,"Identity Server");
+    }
+    
+    @Test
+    public void testSelectProdById() throws SQLException{
+        int id=980001;
+        ProductEntity prod= myDAO.selectProductById(id);
+        assertEquals(prod.getName(),"Identity Server");
+    }
+    
+    
 }

@@ -101,22 +101,23 @@ public class DAO {
     }
 
     public OrderEntity selectCommande(int num) throws SQLException {
+        OrderEntity o = null;
         String sql = "SELECT * FROM PURCHASE_ORDER WHERE ORDER_NUM=? ";
-
         try (Connection connection = myDataSource.getConnection();
                 PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, num);
             ResultSet rs = stmt.executeQuery();
-            int idCustom = rs.getInt("CUSTOMER_ID");
-            int idProd = rs.getInt("PRODUCT_ID");
-            int qtt = rs.getInt("QUANTITY");
-            float shipCost = rs.getFloat("SHIPPING_COST");
-            String shipDate = rs.getString("SHIPPING_DATE");
-            String saleDate = rs.getString("SALES_DATE");
-            String freight = rs.getString("FREIGHT_COMPAGNY");
-            // On crée l'objet entité
-            OrderEntity o = new OrderEntity(num, idCustom, idProd, qtt, shipCost, shipDate, saleDate, freight);
-            // On l'ajoute à la liste des résultats
+            if (rs.next()) {
+                int idCustom = rs.getInt("CUSTOMER_ID");
+                int idProd = rs.getInt("PRODUCT_ID");
+                int qtt = rs.getInt("QUANTITY");
+                float shipCost = rs.getFloat("SHIPPING_COST");
+                String shipDate = rs.getString("SHIPPING_DATE");
+                String saleDate = rs.getString("SALES_DATE");
+                String freight = rs.getString("FREIGHT_COMPANY");
+                // On crée l'objet entité
+                o = new OrderEntity(num, idCustom, idProd, qtt, shipCost, shipDate, saleDate, freight);
+            }
             return o;
         }
     }
@@ -154,29 +155,45 @@ public class DAO {
         }
     }
 
-    // Méthodes DAO Administrateur
-    public ProductEntity selectProductById(int id) throws SQLException {
-        String sql = "SELECT * FROM PRODUCT WHERE PRODUCT_ID=? ";
-
+    public String selectDescriptionProd(int id) throws SQLException {
+        String sql = "SELECT DESCRIPTION FROM PRODUCT WHERE PRODUCT_ID=? ";
+        String descript = "";
         try (Connection connection = myDataSource.getConnection();
                 PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
-            int productId = rs.getInt("PRODUCT_ID");
-            float prix = rs.getFloat("PRICE");
-            String descrip = rs.getString("DESCRIPTION");
-                        // On crée l'objet entité
-            ProductEntity p = new ProductEntity(productId, descrip, prix);
-            // On l'ajoute à la liste des résultats
+            if (rs.next()) {
+                descript = rs.getString("DESCRIPTION");
+            }
+            return descript;
+        }
+    }
+    // Méthodes DAO Administrateur
+
+    public ProductEntity selectProductById(int id) throws SQLException {
+        String sql = "SELECT * FROM PRODUCT WHERE PRODUCT_ID=? ";
+        ProductEntity p = null;
+        try (Connection connection = myDataSource.getConnection();
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                int productId = rs.getInt("PRODUCT_ID");
+                float prix = rs.getFloat("PURCHASE_COST");
+                String descrip = rs.getString("DESCRIPTION");
+                // On crée l'objet entité
+                p = new ProductEntity(productId, descrip, prix);
+            }
             return p;
         }
     }
+
     
-    
+    // fin et début au format AAAA-MM-JJ
     public int CAArticle(int idProd, String debut, String fin) throws SQLException {
         int CA;
         int qtt;
-        float prix = selectProductById(idProd).getPrice();
+        float prix = selectProductById(idProd).getPrice()/* multiplié par QTT?*/;
         // Une requête SQL paramétrée
         String sql = "SELECT SUM(?) FROM PURCHASE_ORDER WHERE PRODUCT_ID=? AND SALES_DATE BETWEEN ? AND ? ";
         try (Connection connection = myDataSource.getConnection();
@@ -186,8 +203,8 @@ public class DAO {
             stmt.setString(3, debut);
             stmt.setString(4, fin);
             ResultSet rs = stmt.executeQuery();
-            CA=rs;
-        return CA;
+            CA = rs;
+            return CA;
         }
     }
 
