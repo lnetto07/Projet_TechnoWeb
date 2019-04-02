@@ -92,7 +92,7 @@ public class OrderEntity {
         myDAO = new DAO(myDataSource);
         float prix=calculPrix(orderId);
         float fraisPort=myDAO.selectCommande(orderId).getShipCost();
-        float p=prix*fraisPort;
+        float p=prix+fraisPort;
         return p;
     }
 

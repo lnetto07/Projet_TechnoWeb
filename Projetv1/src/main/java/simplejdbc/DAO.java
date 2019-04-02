@@ -124,20 +124,18 @@ public class DAO {
 
     public OrderEntity modifCommande(int num, int qtt, FCompany fCompany) throws SQLException {
         OrderEntity order = selectCommande(num);
-        order.setQtt(qtt);
-        order.setFCompany(fCompany);
         String sql = "UPDATE PURCHASE_ORDER SET (?, ?, ?, ?, ?, ?, ?, ?) WHERE ORDER_NUM=?";
         try (Connection connection = myDataSource.getConnection();
                 PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setInt(9, num);
             stmt.setInt(1, order.getOrderId());
             stmt.setInt(2, order.getCustomerId());
             stmt.setInt(3, order.getProductId());
-            stmt.setInt(4, order.getQty());
+            stmt.setInt(4, qtt);
             stmt.setFloat(5, order.getShipCost());
             stmt.setString(6, order.getSalesDate());
             stmt.setString(7, order.getShipDate());
-            stmt.setString(8, order.getFCompany());
+            stmt.setString(8, fCompany.toString());
+            stmt.setInt(9, num);
             stmt.executeUpdate();
         }
         return order;
@@ -188,40 +186,41 @@ public class DAO {
         }
     }
 
-    public float prixProduit(int id) throws SQLException{
-        String sql="SELECT PURCHASE_COST FROM PRODUCT WHER PRODUCT_ID=?";
+    public float prixProduit(int id) throws SQLException {
+        String sql = "SELECT PURCHASE_COST FROM PRODUCT WHERE PRODUCT_ID=?";
         float prix = 0;
         try (Connection connection = myDataSource.getConnection();
                 PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-             prix = rs.getFloat("PURCHASE_COST");
-                
+                prix = rs.getFloat("PURCHASE_COST");
+
             }
             return prix;
         }
     }
+
     // fin et début au format AAAA-MM-JJ
-    public float CAArticle(int idProd, String debut, String fin) throws SQLException {
+    public float CAProduit(int idProd, String debut, String fin) throws SQLException {
         // Requete pour récupérer le prix d'une commande 
-        float CA =0;
-        String sql="SELECT ORDER_ID FROM PURCHASE_ORDER WHERE PRODUCT_ID=? AND SALES_DATE BETWEEN ? AND ?";
+        float CA = 0;
+        String sql = "SELECT ORDER_NUM FROM PURCHASE_ORDER WHERE PRODUCT_ID=? AND SALES_DATE BETWEEN ? AND ?";
         try (Connection connection = myDataSource.getConnection();
                 PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setFloat(1,idProd);
+            stmt.setFloat(1, idProd);
             stmt.setString(2, debut);
             stmt.setString(3, fin);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-             int idOrder = rs.getInt("ORDER_ID");
-             OrderEntity order=selectCommande(idOrder);
-             CA=CA+order.calculPrixTot(idOrder);
-                     }
+                int idOrder = rs.getInt("ORDER_NUM");
+                OrderEntity order = selectCommande(idOrder);
+                CA = CA + order.calculPrixTot(idOrder);
+
+            }
             return CA;
         }
-                
-        
+
     }
 
 }

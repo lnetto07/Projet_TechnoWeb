@@ -1,5 +1,6 @@
 package simplejdbc;
 
+import static java.lang.System.console;
 import java.sql.SQLException;
 import java.util.List;
 import javax.sql.DataSource;
@@ -91,5 +92,20 @@ public class DAOTest {
         assertTrue(test);
     }
     
+    @Test
+    public void testCAProduit() throws SQLException{
+        int id=980001;
+        String deb="2019-01-01";
+        String fin="2019-03-31";
+        float CA= myDAO.CAProduit(id, deb, fin);
+        float testCA=1095*8+650*2;
+        //console.log.println(CA);
+        boolean test=false;
+        if (CA==testCA){
+            test=true;
+        }
+        assertFalse(test);
+        
+    }
     
 }
