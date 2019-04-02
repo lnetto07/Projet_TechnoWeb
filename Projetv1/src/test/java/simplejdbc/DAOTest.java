@@ -84,7 +84,11 @@ public class DAOTest {
     public void testPrixProduit() throws SQLException{
         int id=980001;
         float prix= myDAO.prixProduit(id);
-        assertE(prix,1095)
+        boolean test=false;
+        if (prix==1095.00){
+            test=true;
+        }
+        assertTrue(test);
     }
     
     
