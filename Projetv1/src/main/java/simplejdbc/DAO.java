@@ -188,24 +188,40 @@ public class DAO {
         }
     }
 
-    
-    // fin et début au format AAAA-MM-JJ
-    public int CAArticle(int idProd, String debut, String fin) throws SQLException {
-        int CA;
-        int qtt;
-        float prix = selectProductById(idProd).getPrice()/* multiplié par QTT?*/;
-        // Une requête SQL paramétrée
-        String sql = "SELECT SUM(?) FROM PURCHASE_ORDER WHERE PRODUCT_ID=? AND SALES_DATE BETWEEN ? AND ? ";
+    public float prixProduit(int id) throws SQLException{
+        String sql="SELECT PURCHASE_COST FROM PRODUCT WHER PRODUCT_ID=?";
+        float prix = 0;
         try (Connection connection = myDataSource.getConnection();
                 PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setFloat(1, prix);
-            stmt.setInt(2, idProd);
-            stmt.setString(3, debut);
-            stmt.setString(4, fin);
+            stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
-            CA = rs;
+            if (rs.next()) {
+             prix = rs.getFloat("PURCHASE_COST");
+                
+            }
+            return prix;
+        }
+    }
+    // fin et début au format AAAA-MM-JJ
+    public float CAArticle(int idProd, String debut, String fin) throws SQLException {
+        // Requete pour récupérer le prix d'une commande 
+        float CA =0;
+        String sql="SELECT ORDER_ID FROM PURCHASE_ORDER WHERE PRODUCT_ID=? AND SALES_DATE BETWEEN ? AND ?";
+        try (Connection connection = myDataSource.getConnection();
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setFloat(1,idProd);
+            stmt.setString(2, debut);
+            stmt.setString(3, fin);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+             int idOrder = rs.getInt("ORDER_ID");
+             OrderEntity order=selectCommande(idOrder);
+             CA=CA+order.calculPrixTot(idOrder);
+                     }
             return CA;
         }
+                
+        
     }
 
 }

@@ -5,7 +5,9 @@
  */
 package simplejdbc;
 
+import java.sql.SQLException;
 import java.util.Date;
+import javax.sql.DataSource;
 
 /**
  *
@@ -71,6 +73,27 @@ public class OrderEntity {
     public void setFCompany(FCompany newFCompany){
         this.fCompany=newFCompany.toString();
     }
+    public float calculPrix(int orderId) throws SQLException{
+        DAO myDAO;
+        DataSource myDataSource;
+        myDataSource = DataSourceFactory.getDataSource();
+        myDAO = new DAO(myDataSource);
+        OrderEntity order=myDAO.selectCommande(orderId);
+        float prixProd=myDAO.prixProduit(order.getProductId());
+        int qtt=order.getQty();
+        float p=prixProd*qtt;
+        return p;
+    }
     
+    public float calculPrixTot(int orderId) throws SQLException{
+        DAO myDAO;
+        DataSource myDataSource;
+        myDataSource = DataSourceFactory.getDataSource();
+        myDAO = new DAO(myDataSource);
+        float prix=calculPrix(orderId);
+        float fraisPort=myDAO.selectCommande(orderId).getShipCost();
+        float p=prix*fraisPort;
+        return p;
+    }
 
 }

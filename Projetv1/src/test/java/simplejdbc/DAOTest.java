@@ -80,5 +80,12 @@ public class DAOTest {
         assertEquals(prod.getName(),"Identity Server");
     }
     
+    @Test
+    public void testPrixProduit() throws SQLException{
+        int id=980001;
+        float prix= myDAO.prixProduit(id);
+        assertE(prix,1095)
+    }
+    
     
 }
