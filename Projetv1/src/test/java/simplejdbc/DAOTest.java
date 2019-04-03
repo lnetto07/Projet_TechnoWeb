@@ -95,6 +95,7 @@ public class DAOTest {
         assertEquals(prix,1095.00,0);
     }
     
+//  Fonctionne dans le main mais le test ne passe pas  
     @Test
     public void testCAProduit() throws SQLException{
         String descript="Identity Server";
@@ -102,7 +103,7 @@ public class DAOTest {
         String fin="2019-03-31";
         float CA= myDAO.CAProduit(descript, deb, fin);
         float testCA=1095*8+650*2;
-        assertEquals(CA,testCA,0);        
+        assertEquals(testCA,CA,0);        
     }
     
     @Test
@@ -112,11 +113,7 @@ public class DAOTest {
         String fin="2019-03-31";
         float CA= myDAO.CAClient(id, deb, fin);
         float testCA=1095*8+650*2;
-        boolean test=false;
-        if (CA==testCA){
-            test=true;
-        }
-        assertFalse(test);
+        assertEquals(testCA,CA,0);
         
     }
     

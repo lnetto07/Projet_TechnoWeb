@@ -28,7 +28,7 @@ public class Main {
 //          o.setQtt(10);
 //        //int qtTest=o.getQty();
         System.out.println(CA);
-        System.out.println(testCA);
+       System.out.println(testCA);
 //        boolean test=false;
 //        if (CA==testCA){
 //            test=true;
