@@ -117,4 +117,12 @@ public class DAOTest {
         
     }
     
+    @Test
+    public void testCAZone() throws SQLException{
+        String state = "FL";
+        String deb = "2011-05-24";
+        String fin = "2019-02-03";
+        float CAZ = myDAO.CAZone(state,deb,fin);
+        assertEquals(165925.66, CAZ, 0.1);
+    }	
 }

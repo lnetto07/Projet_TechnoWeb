@@ -258,6 +258,25 @@ public class DAO {
             return CA;
         }
     }
+    
+    public float CAZone (String state, String debut, String fin) throws SQLException{
+        float CA = 0;
+        String sql = "SELECT ORDER_NUM FROM PURCHASE_ORDER JOIN CUSTOMER USING (CUSTOMER_ID) WHERE CUSTOMER.STATE= ? AND SALES_DATE BETWEEN ? AND ?";
+        try (Connection connection = myDataSource.getConnection();
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1,state);
+            stmt.setString(2, debut);
+            stmt.setString(3, fin);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+             int orderNum = rs.getInt("ORDER_NUM");
+             OrderEntity order=selectCommande(orderNum);
+             CA=CA+order.calculPrixTot(orderNum);
+                     }
+        return CA;
+        }
+    
+    }
     }
 //    liste produit
 //    lien produit description et id
