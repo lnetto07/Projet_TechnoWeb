@@ -137,9 +137,11 @@ public class DAO {
             stmt.setString(8, fCompany.toString());
             stmt.setInt(9, num);
             stmt.executeUpdate();
-        }
+            order=selectCommande(num);
+        }  
         return order;
     }
+    
 
     public String supprimerCommande(int num) throws SQLException {
         String sql = "DELETE FROM PURCHASE_ORDER WHERE ORDER_NUM=?";
@@ -167,7 +169,22 @@ public class DAO {
         }
     }
     // Méthodes DAO Administrateur
+    
+    public int selectIdProd(String description) throws SQLException {
+        String sql = "SELECT PRODUCT_ID FROM PRODUCT WHERE DESCRIPTION=?";
+        int id=0;
+        try (Connection connection = myDataSource.getConnection();
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, description);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                id = rs.getInt("PRODUCT_ID");
 
+            }
+            return id;
+        }
+    }
+    
     public ProductEntity selectProductById(int id) throws SQLException {
         String sql = "SELECT * FROM PRODUCT WHERE PRODUCT_ID=? ";
         ProductEntity p = null;
@@ -202,8 +219,9 @@ public class DAO {
     }
 
     // fin et début au format AAAA-MM-JJ
-    public float CAProduit(int idProd, String debut, String fin) throws SQLException {
+    public float CAProduit(String description, String debut, String fin) throws SQLException {
         // Requete pour récupérer le prix d'une commande 
+        int idProd=selectIdProd(description);
         float CA = 0;
         String sql = "SELECT ORDER_NUM FROM PURCHASE_ORDER WHERE PRODUCT_ID=? AND SALES_DATE BETWEEN ? AND ?";
         try (Connection connection = myDataSource.getConnection();
@@ -220,7 +238,28 @@ public class DAO {
             }
             return CA;
         }
-
     }
+        
+    public float CAClient(int idClient, String debut, String fin) throws SQLException{
+        float CA =0;
+        String sql="SELECT ORDER_NUM FROM PURCHASE_ORDER WHERE CUSTOMER_ID=? AND SALES_DATE BETWEEN ? AND ?";
+        try (Connection connection = myDataSource.getConnection();
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setFloat(1, idClient);
+            stmt.setString(2, debut);
+            stmt.setString(3, fin);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                int idOrder = rs.getInt("ORDER_NUM");
+                OrderEntity order = selectCommande(idOrder);
+                CA = CA + order.calculPrixTot(idOrder);
 
-}
+            }
+            return CA;
+        }
+    }
+    }
+//    liste produit
+//    lien produit description et id
+//    lien client et son id
+//    liste client

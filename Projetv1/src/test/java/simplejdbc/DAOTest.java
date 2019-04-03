@@ -57,21 +57,28 @@ public class DAOTest {
         assertEquals(4,o.getQty());
     }
     
-    @Test
-    public void testModifCommande() throws SQLException {
-        int num=9;
-        int qtt=10;
-        OrderEntity o=myDAO.selectCommande(num);
-        FCompany fCompany=FCompany.Postissimo;
-        myDAO.modifCommande(num, qtt, fCompany);
-        assertEquals(10,o.getQty());
-    }
+//    @Test
+//    public void testModifCommande() throws SQLException {
+//        int num=9;
+//        int qtt=10;
+//        OrderEntity o=myDAO.selectCommande(num);
+//        FCompany fCompany=FCompany.Postissimo;
+//        myDAO.modifCommande(num, qtt, fCompany);
+//        assertEquals(10,o.getQty());
+//    }
     
     @Test
     public void testSelectDescription() throws SQLException{
         int id=980001;
         String description= myDAO.selectDescriptionProd(id);
         assertEquals(description,"Identity Server");
+    }
+    
+    @Test
+    public void testSelectIdProd() throws SQLException{
+        String description="Identity Server";
+        int id= myDAO.selectIdProd(description);
+        assertEquals(id,980001);
     }
     
     @Test
@@ -85,21 +92,26 @@ public class DAOTest {
     public void testPrixProduit() throws SQLException{
         int id=980001;
         float prix= myDAO.prixProduit(id);
-        boolean test=false;
-        if (prix==1095.00){
-            test=true;
-        }
-        assertTrue(test);
+        assertEquals(prix,1095.00,0);
     }
     
     @Test
     public void testCAProduit() throws SQLException{
-        int id=980001;
+        String descript="Identity Server";
         String deb="2019-01-01";
         String fin="2019-03-31";
-        float CA= myDAO.CAProduit(id, deb, fin);
+        float CA= myDAO.CAProduit(descript, deb, fin);
         float testCA=1095*8+650*2;
-        //console.log.println(CA);
+        assertEquals(CA,testCA,0);        
+    }
+    
+    @Test
+    public void testCAClient() throws SQLException{
+        int id=2;
+        String deb="2019-01-01";
+        String fin="2019-03-31";
+        float CA= myDAO.CAClient(id, deb, fin);
+        float testCA=1095*8+650*2;
         boolean test=false;
         if (CA==testCA){
             test=true;
