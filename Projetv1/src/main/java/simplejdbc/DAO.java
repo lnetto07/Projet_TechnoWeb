@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
@@ -239,9 +240,39 @@ public class DAO {
             return CA;
         }
     }
+     
+    public String selectNomClient(int id) throws SQLException {
+        String sql = "SELECT NAME FROM CUSTOMER WHERE CUSTOMER_ID=? ";
+        String name = "";
+        try (Connection connection = myDataSource.getConnection();
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                name = rs.getString("NAME");
+            }
+            return name;
+        }
+    }
+    
+    public int selectIdClient(String name) throws SQLException {
+        String sql = "SELECT CUSTOMER_ID FROM CUSTOMER WHERE NAME=?";
+        int id=0;
+        try (Connection connection = myDataSource.getConnection();
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, name);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                id = rs.getInt("CUSTOMER_ID");
+
+            }
+            return id;
+        }
+    }
         
-    public float CAClient(int idClient, String debut, String fin) throws SQLException{
+    public float CAClient(String name, String debut, String fin) throws SQLException{
         float CA =0;
+        int idClient=selectIdClient(name);
         String sql="SELECT ORDER_NUM FROM PURCHASE_ORDER WHERE CUSTOMER_ID=? AND SALES_DATE BETWEEN ? AND ?";
         try (Connection connection = myDataSource.getConnection();
                 PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -277,8 +308,51 @@ public class DAO {
         }
     
     }
+    
+    public List<String> listeProduit() throws SQLException {
+        List<String> produits = new LinkedList<>();
+        String sql = "SELECT DESCRIPTION FROM PRODUCT";
+        try (Connection connection = myDataSource.getConnection();
+                Statement stmt = connection.createStatement();
+                ResultSet rs = stmt.executeQuery(sql)) {
+            while (rs.next()) {
+                String description= rs.getString("DESCRIPTION");
+                produits.add(description);
+
+            }
+            return produits;
+        }
     }
-//    liste produit
-//    lien produit description et id
-//    lien client et son id
+    
+    public List<String> listeClient() throws SQLException {
+        List<String> clients = new LinkedList<>();
+        String sql = "SELECT NAME FROM CUSTOMER";
+        try (Connection connection = myDataSource.getConnection();
+                Statement stmt = connection.createStatement();
+                ResultSet rs = stmt.executeQuery(sql)) {
+            while (rs.next()) {
+                String name= rs.getString("NAME");
+                clients.add(name);
+
+            }
+            return clients;
+        }       
+    }
+    
+    public List<String> listeState() throws SQLException {
+        List<String> states = new LinkedList<>();
+        String sql = "SELECT STATE FROM CUSTOMER GROUP BY STATE";
+        try (Connection connection = myDataSource.getConnection();
+                Statement stmt = connection.createStatement();
+                ResultSet rs = stmt.executeQuery(sql)) {
+            while (rs.next()) {
+                String etat= rs.getString("STATE");
+                states.add(etat);
+
+            }
+            return states;
+        }  
+    }
+    
+}
 //    liste client

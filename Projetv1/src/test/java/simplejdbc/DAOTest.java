@@ -27,45 +27,45 @@ public class DAOTest {
      */
     @Test
     public void testCommandeExistante() throws DAOException, SQLException {
-        String clientName = "New Enterprises";
+        String clientName = "Small Bill Company";
         List<OrderEntity> commandes = myDAO.commandesExistantes(clientName);
-        assertEquals(3, commandes.size());
+        assertEquals(1, commandes.size());
     }
 
     @Test
     public void testAjoutCommande() throws DAOException, SQLException {
-        OrderEntity order = new OrderEntity(7, 2, 980001, 4, 650, "2019-02-03", "2019-01-20", FCompany.JetLag.toString());
+        OrderEntity order = new OrderEntity(7, 3, 980001, 4, 650, "2019-02-03", "2019-01-20", FCompany.JetLag.toString());
         myDAO.ajoutCommande(order);
-        String clientName = "New Enterprises";
+        String clientName = "Small Bill Company";
         List<OrderEntity> commandes = myDAO.commandesExistantes(clientName);
-        assertEquals(4, commandes.size());
+        assertEquals(2, commandes.size());
     }
     
     @Test
     public void testSupprCommande() throws SQLException {
         int num =7;
         myDAO.supprimerCommande(num);
-        String clientName = "New Enterprises";
+        String clientName = "Small Bill Company";
         List<OrderEntity> commandes = myDAO.commandesExistantes(clientName);
-        assertEquals(3, commandes.size());    
+        assertEquals(1, commandes.size());    
     }
     
     @Test
     public void testSelectCommande() throws SQLException{
-        int num=9;
+        int num=10398002;
         OrderEntity o=myDAO.selectCommande(num);
-        assertEquals(4,o.getQty());
+        assertEquals(8,o.getQty());
     }
     
-//    @Test
-//    public void testModifCommande() throws SQLException {
-//        int num=9;
-//        int qtt=10;
-//        OrderEntity o=myDAO.selectCommande(num);
-//        FCompany fCompany=FCompany.Postissimo;
-//        myDAO.modifCommande(num, qtt, fCompany);
-//        assertEquals(10,o.getQty());
-//    }
+    @Test
+    public void testModifCommande() throws SQLException {
+        int num=10398002;
+        int qtt=10;
+        OrderEntity o=myDAO.selectCommande(num);
+        FCompany fCompany=FCompany.Postissimo;
+        myDAO.modifCommande(num, qtt, fCompany);
+        assertEquals(10,o.getQty());
+    }
     
     @Test
     public void testSelectDescription() throws SQLException{
@@ -82,6 +82,20 @@ public class DAOTest {
     }
     
     @Test
+    public void testSelectName() throws SQLException{
+        int id=3;
+        String name= myDAO.selectNomClient(id);
+        assertEquals(name,"Small Bill Company");
+    }
+    
+    @Test
+    public void testSelectIdClient() throws SQLException{
+        String name="Small Bill Company";
+        int id= myDAO.selectIdClient(name);
+        assertEquals(id,3);
+    }
+    
+    @Test
     public void testSelectProdById() throws SQLException{
         int id=980001;
         ProductEntity prod= myDAO.selectProductById(id);
@@ -90,29 +104,29 @@ public class DAOTest {
     
     @Test
     public void testPrixProduit() throws SQLException{
-        int id=980001;
+        int id=980030;
         float prix= myDAO.prixProduit(id);
-        assertEquals(prix,1095.00,0);
+        assertEquals(prix,59.95,1);
     }
     
 //  Fonctionne dans le main mais le test ne passe pas  
     @Test
     public void testCAProduit() throws SQLException{
-        String descript="Identity Server";
-        String deb="2019-01-01";
-        String fin="2019-03-31";
+        String descript="10Gb Ram";
+        String deb="2011-04-12";
+        String fin="2012-10-25";
         float CA= myDAO.CAProduit(descript, deb, fin);
-        float testCA=1095*8+650*2;
+        float testCA=(float) 874.5;
         assertEquals(testCA,CA,0);        
     }
     
     @Test
     public void testCAClient() throws SQLException{
-        int id=2;
-        String deb="2019-01-01";
-        String fin="2019-03-31";
-        float CA= myDAO.CAClient(id, deb, fin);
-        float testCA=1095*8+650*2;
+        String name = "Small Bill Company";;
+        String deb="2011-04-12";
+        String fin="2012-10-25";
+        float CA= myDAO.CAClient(name, deb, fin);
+        float testCA=(float) 874.5;
         assertEquals(testCA,CA,0);
         
     }
@@ -124,5 +138,23 @@ public class DAOTest {
         String fin = "2019-02-03";
         float CAZ = myDAO.CAZone(state,deb,fin);
         assertEquals(165925.66, CAZ, 0.1);
-    }	
+    }
+    
+    @Test
+    public void testListeProduit() throws DAOException, SQLException {
+        List<String> produits = myDAO.listeProduit();
+        assertEquals(20, produits.size());
+    }
+    
+    @Test
+    public void testListeClient() throws DAOException, SQLException {
+        List<String> clients = myDAO.listeClient();
+        assertEquals(13, clients.size());
+    }
+    
+    @Test
+    public void testListeEtat() throws DAOException, SQLException {
+        List<String> etats = myDAO.listeState();
+        assertEquals(6, etats.size());
+    }
 }
