@@ -69,7 +69,57 @@ input {
 
 
 
-
+header{
+	
+  background-color: darkblue;
+  padding-top: 5px;
+  padding-bottom:5px;
+  padding-right:30px; 
+  padding-left:30px;
+  height:60px;
+  display: flex; 
+  align-items:center;
+  
+  }
+  
+  li{
+    
+  display :inline-block;
+  list-style-type: none;
+  
+  }
+  li a {
+    
+  font-family:"Roboto", sans-serif;
+  text-decoration:none; 
+  color:#FFFFFF;
+  text-transform: uppercase;
+  font-size:1.4em;
+  padding-bottom:0px;
+  padding-top:0px;
+  padding-left:10px;
+  padding-right:10px;
+  
+  }
+  li:not(:last-child) a{
+    
+  border-right:1px;
+  border-right-color:rgba(255,255,255,0.2);
+  border-right-style:solid;
+  
+  }
+  nav{
+    
+  flex:7;
+  
+  }
+  nav ul{
+    
+  text-align:right;
+  margin:0;
+  padding:0;
+  
+  }
 
 .log-form {
   width: 40%;
