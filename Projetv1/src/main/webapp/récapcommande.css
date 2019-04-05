@@ -58,6 +58,9 @@ h4 {
     box-shadow: inset 0px 1px 0px fadeout(white, 80%); 
   }
   
+  body{
+    margin :0px;
+  }
 
 .infocomm{
     width: 40%;
@@ -83,7 +86,7 @@ h4 {
 
   header{
 	
-    background-color: darkblue;
+    background-color: none;
     padding-top: 5px;
     padding-bottom:5px;
     padding-right:30px; 

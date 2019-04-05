@@ -29,11 +29,12 @@ section div {
   .periode {
     font-family: 'open sans', helvetica, arial, sans;
     color : white;
+    margin :2px;
   }
 
   header{
 	
-    background-color: darkblue;
+    background-color: none;
     padding-top: 5px;
     padding-bottom:5px;
     padding-right:30px; 
@@ -81,4 +82,8 @@ section div {
     margin:0;
     padding:0;
     
+    }
+
+    body{
+      margin :0px;
     }
