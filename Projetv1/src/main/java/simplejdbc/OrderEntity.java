@@ -46,10 +46,21 @@ public class OrderEntity {
     public int getProductId() {
         return productId;
     }
+    
+    public String getProductName(int id) throws SQLException{
+        DAO myDAO;
+        DataSource myDataSource;
+        myDataSource = DataSourceFactory.getDataSource();
+        myDAO = new DAO(myDataSource);
+        String name=myDAO.selectDescriptionProd(id);
+        return name;
+    }
 
     public int getQty() {
         return qty;
     }
+    
+
 
     public float getShipCost() {
         return shipCost;
