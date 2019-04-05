@@ -6,7 +6,7 @@
 	<head>
 		<meta charset="UTF-8" />
                 <title>PAGE D'ACCUEIL</title>
-                <link rel="stylesheet" media="screen" href="v2.css" type="text/css"/>
+                <link rel="stylesheet" media="screen" href="accueil.css" type="text/css"/>
 	</head>
 	<body>
 		
