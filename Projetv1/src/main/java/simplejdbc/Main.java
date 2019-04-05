@@ -15,8 +15,7 @@ public class Main {
     
      public static void main(String[] args) throws Exception {
         DAO myDAO = new DAO(DataSourceFactory.getDataSource());
-        List<String> prod=myDAO.listeProduit();
-        int taille=prod.size();
+        int taille=myDAO.maxCommande();
         System.out.println(taille);
        
 

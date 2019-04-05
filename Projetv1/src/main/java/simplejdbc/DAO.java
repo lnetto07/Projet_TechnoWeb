@@ -5,7 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Collections;
 import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -52,7 +54,7 @@ public class DAO {
 
         return result;
     }
-    
+
     //nom à partir del'email
     public String selectNomByEmail(String email) throws SQLException {
         String sql = "SELECT NAME FROM CUSTOMER WHERE EMAIL=? ";
@@ -69,13 +71,13 @@ public class DAO {
     }
 
     //Methode DAO Client
-    public List<OrderEntity> commandesExistantes(String clientMail) throws SQLException {
+    public List<OrderEntity> commandesExistantes(String clientName) throws SQLException {
         List<OrderEntity> commande = new LinkedList<>();
         // Une requête SQL paramétrée
-        String sql = "SELECT * FROM PURCHASE_ORDER WHERE CUSTOMER_ID=(SELECT CUSTOMER_ID FROM CUSTOMER WHERE EMAIL=?) ";
+        String sql = "SELECT * FROM PURCHASE_ORDER WHERE CUSTOMER_ID=(SELECT CUSTOMER_ID FROM CUSTOMER WHERE NAME=?) ";
         try (Connection connection = myDataSource.getConnection();
                 PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setString(1, clientMail);
+            stmt.setString(1, clientName);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     // On récupère les champs nécessaires de l'enregistrement courant
@@ -137,8 +139,9 @@ public class DAO {
             return o;
         }
     }
-
-    public OrderEntity modifCommande(int num, int qtt, FCompany fCompany) throws SQLException {
+    
+    
+    public OrderEntity modifCommande(int num, int qtt, FCompany fCompany, String date) throws SQLException {
         OrderEntity order = selectCommande(num);
         String sql = "UPDATE PURCHASE_ORDER SET ORDER_NUM=?, CUSTOMER_ID=?, PRODUCT_ID=?, QUANTITY=?, SHIPPING_COST=?, SALES_DATE=?, SHIPPING_DATE=?, FREIGHT_COMPANY=? WHERE ORDER_NUM=?";
         try (Connection connection = myDataSource.getConnection();
@@ -148,16 +151,16 @@ public class DAO {
             stmt.setInt(3, order.getProductId());
             stmt.setInt(4, qtt);
             stmt.setFloat(5, order.getShipCost());
-            stmt.setString(6, order.getSalesDate());
+            stmt.setString(6, date);
             stmt.setString(7, order.getShipDate());
             stmt.setString(8, fCompany.toString());
             stmt.setInt(9, num);
             stmt.executeUpdate();
-            order=selectCommande(num);
-        }  
+            order = selectCommande(num);
+        }
         return order;
     }
-    
+
 
     public String supprimerCommande(int num) throws SQLException {
         String sql = "DELETE FROM PURCHASE_ORDER WHERE ORDER_NUM=?";
@@ -184,11 +187,28 @@ public class DAO {
             return descript;
         }
     }
-    // Méthodes DAO Administrateur
+
+    //max des num commande pour generer un nouveau num
+    public int numNewCommande() throws SQLException {
+        String sql = "SELECT ORDER_NUM  FROM PURCHASE_ORDER ";
+        ArrayList<Integer> orderNum=new ArrayList<Integer>();
+        int max = 0;
+        try (Connection connection = myDataSource.getConnection();
+                Statement stmt = connection.createStatement();
+                ResultSet rs = stmt.executeQuery(sql)) {
+            while (rs.next()) {
+                int order=rs.getInt("ORDER_NUM");
+                orderNum.add(order);
+            }
+                max = (int)Collections.max(orderNum)+1;
+            }
+            return max;
+        }
+        // Méthodes DAO Administrateur
     
     public int selectIdProd(String description) throws SQLException {
         String sql = "SELECT PRODUCT_ID FROM PRODUCT WHERE DESCRIPTION=?";
-        int id=0;
+        int id = 0;
         try (Connection connection = myDataSource.getConnection();
                 PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, description);
@@ -200,7 +220,7 @@ public class DAO {
             return id;
         }
     }
-    
+
     public ProductEntity selectProductById(int id) throws SQLException {
         String sql = "SELECT * FROM PRODUCT WHERE PRODUCT_ID=? ";
         ProductEntity p = null;
@@ -237,7 +257,7 @@ public class DAO {
     // fin et début au format AAAA-MM-JJ
     public float CAProduit(String description, String debut, String fin) throws SQLException {
         // Requete pour récupérer le prix d'une commande 
-        int idProd=selectIdProd(description);
+        int idProd = selectIdProd(description);
         float CA = 0;
         String sql = "SELECT ORDER_NUM FROM PURCHASE_ORDER WHERE PRODUCT_ID=? AND SALES_DATE BETWEEN ? AND ?";
         try (Connection connection = myDataSource.getConnection();
@@ -255,7 +275,7 @@ public class DAO {
             return CA;
         }
     }
-     
+
     public String selectNomById(int id) throws SQLException {
         String sql = "SELECT NAME FROM CUSTOMER WHERE CUSTOMER_ID=? ";
         String name = "";
@@ -269,10 +289,10 @@ public class DAO {
             return name;
         }
     }
-    
+
     public int selectIdClient(String name) throws SQLException {
         String sql = "SELECT CUSTOMER_ID FROM CUSTOMER WHERE NAME=?";
-        int id=0;
+        int id = 0;
         try (Connection connection = myDataSource.getConnection();
                 PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, name);
@@ -284,11 +304,11 @@ public class DAO {
             return id;
         }
     }
-        
-    public float CAClient(String name, String debut, String fin) throws SQLException{
-        float CA =0;
-        int idClient=selectIdClient(name);
-        String sql="SELECT ORDER_NUM FROM PURCHASE_ORDER WHERE CUSTOMER_ID=? AND SALES_DATE BETWEEN ? AND ?";
+
+    public float CAClient(String name, String debut, String fin) throws SQLException {
+        float CA = 0;
+        int idClient = selectIdClient(name);
+        String sql = "SELECT ORDER_NUM FROM PURCHASE_ORDER WHERE CUSTOMER_ID=? AND SALES_DATE BETWEEN ? AND ?";
         try (Connection connection = myDataSource.getConnection();
                 PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setFloat(1, idClient);
@@ -304,26 +324,26 @@ public class DAO {
             return CA;
         }
     }
-    
-    public float CAZone (String state, String debut, String fin) throws SQLException{
+
+    public float CAZone(String state, String debut, String fin) throws SQLException {
         float CA = 0;
         String sql = "SELECT ORDER_NUM FROM PURCHASE_ORDER JOIN CUSTOMER USING (CUSTOMER_ID) WHERE CUSTOMER.STATE= ? AND SALES_DATE BETWEEN ? AND ?";
         try (Connection connection = myDataSource.getConnection();
                 PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setString(1,state);
+            stmt.setString(1, state);
             stmt.setString(2, debut);
             stmt.setString(3, fin);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-             int orderNum = rs.getInt("ORDER_NUM");
-             OrderEntity order=selectCommande(orderNum);
-             CA=CA+order.calculPrixTot(orderNum);
-                     }
-        return CA;
+                int orderNum = rs.getInt("ORDER_NUM");
+                OrderEntity order = selectCommande(orderNum);
+                CA = CA + order.calculPrixTot(orderNum);
+            }
+            return CA;
         }
-    
+
     }
-    
+
     public List<String> listeProduit() throws SQLException {
         List<String> produits = new LinkedList<>();
         String sql = "SELECT DESCRIPTION FROM PRODUCT";
@@ -331,14 +351,14 @@ public class DAO {
                 Statement stmt = connection.createStatement();
                 ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
-                String description= rs.getString("DESCRIPTION");
+                String description = rs.getString("DESCRIPTION");
                 produits.add(description);
 
             }
             return produits;
         }
     }
-    
+
     public List<String> listeClient() throws SQLException {
         List<String> clients = new LinkedList<>();
         String sql = "SELECT NAME FROM CUSTOMER";
@@ -346,14 +366,14 @@ public class DAO {
                 Statement stmt = connection.createStatement();
                 ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
-                String name= rs.getString("NAME");
+                String name = rs.getString("NAME");
                 clients.add(name);
 
             }
             return clients;
-        }       
+        }
     }
-    
+
     public List<String> listeState() throws SQLException {
         List<String> states = new LinkedList<>();
         String sql = "SELECT STATE FROM CUSTOMER GROUP BY STATE";
@@ -361,12 +381,12 @@ public class DAO {
                 Statement stmt = connection.createStatement();
                 ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
-                String etat= rs.getString("STATE");
+                String etat = rs.getString("STATE");
                 states.add(etat);
 
             }
             return states;
-        }  
+        }
     }
-    
+
 }

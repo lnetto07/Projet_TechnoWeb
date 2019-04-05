@@ -1,10 +1,10 @@
 package simplejdbc;
 
-import static java.lang.System.console;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import javax.sql.DataSource;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -64,7 +64,7 @@ public class DAOTest {
         int num=10398002;
         int qtt=10;
         FCompany fCompany=FCompany.Postissimo;
-        myDAO.modifCommande(num, qtt, fCompany);
+        myDAO.modifCommande(num, qtt, fCompany, "2012-04-05");
         OrderEntity o=myDAO.selectCommande(num);
         assertEquals(10,o.getQty());
     }
@@ -111,6 +111,13 @@ public class DAOTest {
         ProductEntity prod= myDAO.selectProductById(id);
         assertEquals(prod.getName(),"Identity Server");
     }
+    
+    @Test
+    public void testMaxCommandeNum() throws SQLException{
+        int max=myDAO.numNewCommande();
+        assertEquals(max,30298005);
+    }   
+    
     
     @Test
     public void testPrixProduit() throws SQLException{
