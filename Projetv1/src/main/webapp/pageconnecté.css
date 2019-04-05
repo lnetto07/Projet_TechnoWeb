@@ -66,11 +66,12 @@ h5 {
   box-shadow: inset 0px 1px 0px fadeout(white, 80%); 
 }
 
+table {
+  font-family: 'open sans', helvetica, arial, sans; 
+  color : white;
 
-.comm {
-  width: 40%;
-  min-width: 320px;
-  max-width: 475px;
-  background: #fff;
+}
 
+td, th {
+  padding : 5px;
 }
