@@ -52,6 +52,21 @@ public class DAO {
 
         return result;
     }
+    
+    //nom à partir del'email
+    public String selectNomByEmail(String email) throws SQLException {
+        String sql = "SELECT NAME FROM CUSTOMER WHERE EMAIL=? ";
+        String name = "";
+        try (Connection connection = myDataSource.getConnection();
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, email);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                name = rs.getString("NAME");
+            }
+            return name;
+        }
+    }
 
     //Methode DAO Client
     public List<OrderEntity> commandesExistantes(String clientName) throws SQLException {
@@ -125,7 +140,7 @@ public class DAO {
 
     public OrderEntity modifCommande(int num, int qtt, FCompany fCompany) throws SQLException {
         OrderEntity order = selectCommande(num);
-        String sql = "UPDATE PURCHASE_ORDER SET (?, ?, ?, ?, ?, ?, ?, ?) WHERE ORDER_NUM=?";
+        String sql = "UPDATE PURCHASE_ORDER SET ORDER_NUM=?, CUSTOMER_ID=?, PRODUCT_ID=?, QUANTITY=?, SHIPPING_COST=?, SALES_DATE=?, SHIPPING_DATE=?, FREIGHT_COMPANY=? WHERE ORDER_NUM=?";
         try (Connection connection = myDataSource.getConnection();
                 PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, order.getOrderId());
@@ -241,7 +256,7 @@ public class DAO {
         }
     }
      
-    public String selectNomClient(int id) throws SQLException {
+    public String selectNomById(int id) throws SQLException {
         String sql = "SELECT NAME FROM CUSTOMER WHERE CUSTOMER_ID=? ";
         String name = "";
         try (Connection connection = myDataSource.getConnection();

@@ -4,6 +4,7 @@ import static java.lang.System.console;
 import java.sql.SQLException;
 import java.util.List;
 import javax.sql.DataSource;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -18,6 +19,7 @@ public class DAOTest {
         myDataSource = DataSourceFactory.getDataSource();
         myDAO = new DAO(myDataSource);
     }
+    
 
     /**
      * Test of numberOfCustomers method, of class DAO.
@@ -52,18 +54,18 @@ public class DAOTest {
     
     @Test
     public void testSelectCommande() throws SQLException{
-        int num=10398002;
+        int num=10398001;
         OrderEntity o=myDAO.selectCommande(num);
-        assertEquals(8,o.getQty());
+        assertEquals(10,o.getQty());
     }
     
     @Test
     public void testModifCommande() throws SQLException {
         int num=10398002;
         int qtt=10;
-        OrderEntity o=myDAO.selectCommande(num);
         FCompany fCompany=FCompany.Postissimo;
         myDAO.modifCommande(num, qtt, fCompany);
+        OrderEntity o=myDAO.selectCommande(num);
         assertEquals(10,o.getQty());
     }
     
@@ -82,11 +84,19 @@ public class DAOTest {
     }
     
     @Test
-    public void testSelectName() throws SQLException{
+    public void testSelectNameById() throws SQLException{
         int id=3;
-        String name= myDAO.selectNomClient(id);
+        String name= myDAO.selectNomById(id);
         assertEquals(name,"Small Bill Company");
     }
+    
+    @Test
+    public void testSelectNameByEmail() throws SQLException{
+        String email="www.smallbill.example.com";
+        String name= myDAO.selectNomByEmail(email);
+        assertEquals(name,"Small Bill Company");
+    }
+    
     
     @Test
     public void testSelectIdClient() throws SQLException{
@@ -134,16 +144,17 @@ public class DAOTest {
     @Test
     public void testCAZone() throws SQLException{
         String state = "FL";
-        String deb = "2011-05-24";
-        String fin = "2019-02-03";
+        String deb ="2011-04-12";
+        String fin ="2012-10-25";
         float CAZ = myDAO.CAZone(state,deb,fin);
-        assertEquals(165925.66, CAZ, 0.1);
+        float testCA=(float) 183897.64 ;
+        assertEquals(testCA, CAZ, 0.1);
     }
     
     @Test
     public void testListeProduit() throws DAOException, SQLException {
         List<String> produits = myDAO.listeProduit();
-        assertEquals(20, produits.size());
+        assertEquals(30, produits.size());
     }
     
     @Test
