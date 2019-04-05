@@ -20,9 +20,12 @@ public class LoginController extends HttpServlet {
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
+     * @throws simplejdbc.DAOException
+     * @throws java.sql.SQLException
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, DAOException {
+            throws ServletException, IOException, DAOException, SQLException {
+
         // Quelle action a appelé cette servlet ?
         String action = request.getParameter("action");
         if (null != action) {
@@ -71,7 +74,11 @@ public class LoginController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            processRequest(request, response);
+            try {
+                processRequest(request, response);
+            } catch (SQLException ex) {
+                Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         } catch (DAOException ex) {
             Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -92,6 +99,8 @@ public class LoginController extends HttpServlet {
             processRequest(request, response);
         } catch (DAOException ex) {
             Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -105,34 +114,35 @@ public class LoginController extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    private void checkLogin(HttpServletRequest request) throws DAOException {
+    private void checkLogin(HttpServletRequest request) throws DAOException, SQLException {
         // Les paramètres transmis dans la requête
         String loginParam = request.getParameter("loginParam");
         String passwordParam = request.getParameter("passwordParam");
 
-        
         DAO dao = new DAO(DataSourceFactory.getDataSource());
-        String adL=getInitParameter("adminL");
-        String adP=getInitParameter("adminP");
+        String adL = getInitParameter("adminL");
+        String adP = getInitParameter("adminP");
         if (loginParam.equals(adL)) {
-            if(passwordParam.equals(adP)){
-            
+            if (passwordParam.equals(adP)) {
+
                 HttpSession session = request.getSession(true); // démarre la session
                 session.setAttribute("userName", "admin");
-            
-        }
-            else
-             request.setAttribute("errorMessage", "Login/Password incorrect");
 
-        }else{
-                    int pass = dao.loginCustomer(loginParam, Integer.parseInt(passwordParam));
+            } else {
+                request.setAttribute("errorMessage", "Login/Password incorrect");
+            }
+
+        } else {
+            int pass = dao.loginCustomer(loginParam, Integer.parseInt(passwordParam));
 
             if (pass == (Integer.parseInt(passwordParam))) {
-            // On a trouvé la combinaison login / password
-            // On stocke l'information dans la session
+                // On a trouvé la combinaison login / password
+                // On stocke l'information dans la session
                 HttpSession session = request.getSession(true); // démarre la session
                 session.setAttribute("userName", loginParam);
-           
+                List<OrderEntity> commandeCli = dao.commandesExistantes(loginParam);
+                request.setAttribute("listCommandes", commandeCli);
+
             } else // On positionne un message d'erreur pour l'afficher dans la JSP
             {
                 request.setAttribute("errorMessage", "Login/Password incorrect");

@@ -17,13 +17,45 @@
         <h3> Listes des commandes </h3>
         <button type="submit" class="btn">Voir mes commandes</button>
       </div>
-      <div class="comm">
-        <h4>Commande 1</h4>
-        <h5>Numéro</h5>
-        <h5>Produit</h5>
-        <h5>Date</h5>
+      <table border ="0">
+        <thead>
+          <th>Numéro</th>
+          <th>Produit</th>
+          <th>Quantité</th>
+          <th>Prix</th>
+          <th>Date de commande</th>
+          <th>Date d'envoi</th>
+        </thead>
+        <tbody>
+          <tr>
+            <td>...</td>
+            <td>...</td>
+            <td>...</td>
+            <td>...</td>
+            <td>...</td>
+            <td>...</td>
+          </tr>
+        </tbody>
+      </table>
         <button type="submit" class="btn">Modifier</button>
-        <button type="submit" class="btn">Supprimer</button>
+
+        <button class="btn" onclick="myFunction()">Supprimer</button>
+
+
+        <p id="suppression"></p>
+        <script>
+          function myFunction() {
+            var txt;
+            if (confirm("Confirmez vous la suppression de votre commande ?")) {
+              txt = "Confirmer";
+            } else {
+              txt = "Annuler";
+            }
+            document.getElementById("suppression").innerHTML = txt;
+          }
+        </script>
+
+
       </div>
     </form>
 

@@ -69,13 +69,13 @@ public class DAO {
     }
 
     //Methode DAO Client
-    public List<OrderEntity> commandesExistantes(String clientName) throws SQLException {
+    public List<OrderEntity> commandesExistantes(String clientMail) throws SQLException {
         List<OrderEntity> commande = new LinkedList<>();
         // Une requête SQL paramétrée
-        String sql = "SELECT * FROM PURCHASE_ORDER WHERE CUSTOMER_ID=(SELECT CUSTOMER_ID FROM CUSTOMER WHERE NAME=?) ";
+        String sql = "SELECT * FROM PURCHASE_ORDER WHERE CUSTOMER_ID=(SELECT CUSTOMER_ID FROM CUSTOMER WHERE EMAIL=?) ";
         try (Connection connection = myDataSource.getConnection();
                 PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setString(1, clientName);
+            stmt.setString(1, clientMail);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     // On récupère les champs nécessaires de l'enregistrement courant
@@ -370,4 +370,3 @@ public class DAO {
     }
     
 }
-//    liste client
