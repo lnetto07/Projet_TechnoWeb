@@ -12,6 +12,11 @@ section {
     flex-direction :column;
 }
 
+table{
+  float:left;
+  width: 40%;
+}
+
 section div {
   flex-direction: column;
 }
@@ -29,8 +34,16 @@ section div {
   .periode {
     font-family: 'open sans', helvetica, arial, sans;
     color : white;
-    margin :2px;
+    
   }
+
+  .periode {
+    font-family: 'open sans', helvetica, arial, sans;
+    color : white;
+    
+    
+  }
+
 
   header{
 	
