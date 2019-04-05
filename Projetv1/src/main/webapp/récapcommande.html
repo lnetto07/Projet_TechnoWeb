@@ -8,17 +8,18 @@
 </head>
 
 <body>
-        <header>
-                <nav>
-                    <ul>
-                        <li><a href="#accueil">Accueil</a></li>
-                        <li><a href="#equipe">Mes commandes</a></li>
-                        <li><a href="#ressources">Faire une commande</a></li>
-                        <li><a href="#contact">Contact</a></li>
-                    </ul>
-                </nav>
-            </header>
+       
     <section id="accueil">
+            <header>
+                    <nav>
+                        <ul>
+                            <li><a href="#accueil">Accueil</a></li>
+                            <li><a href="#equipe">Mes commandes</a></li>
+                            <li><a href="#ressources">Faire une commande</a></li>
+                            <li><a href="#contact">Contact</a></li>
+                        </ul>
+                    </nav>
+                </header>
         <div class="titre">
             <h2>Commande 1</h2>
         </div>
@@ -26,10 +27,15 @@
 
             <div class="infocomm">
                 <h3> Information commande </h3>
-                <label for="numéro">Numéro :</label> <input type="text" required>
+                <label for="numéro">Numéro :</label>
                 <br>
                 <br>
-                <label for="produit">Produit :</label> <input type="text" required>
+                <label for="produit">Produit :</label> 
+                <select id="pays" name="pays">
+                    <option value="1" selected="selected">Produit 1</option>
+                    <option value="2" selected="selected">Produit 2</option>
+                    <option value="3" selected="selected">Produit 3</option>
+                </select>
                 <br>
                 <br>
                 <label for="quantié">Quantité :</label> <input type="text" required> 
@@ -39,9 +45,6 @@
 
             <div class="infoclient">
                 <h3> Information Client </h3>
-                <label for="nom">Nom :</label> <input type="text" required>
-                <br>
-                <br>
                 <label for="adresse">Adresse :</label> <input type="text" required>
                 <br>
                 <br>
