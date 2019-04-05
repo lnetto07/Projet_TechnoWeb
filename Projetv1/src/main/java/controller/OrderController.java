@@ -7,6 +7,7 @@ package controller;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -37,13 +38,17 @@ public class OrderController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
         String action = request.getParameter("action");
-
         if (null != action) {
             switch (action) {
                 case "test":
                     request.getRequestDispatcher("test.jsp").forward(request, response);
-
                     break;
+                    
+                case "ajout":
+                    ajouterCommande(request);
+                    request.getRequestDispatcher("fairecommande.jsp").forward(request, response);
+                    break;
+                    
                 default:
                     supprimerCommande(request);
                     request.getRequestDispatcher("affiche.jsp").forward(request, response);
@@ -65,6 +70,14 @@ public class OrderController extends HttpServlet {
         List<OrderEntity> commandeCli = dao.commandesExistantes(userName);
         request.setAttribute("listCommandes", commandeCli);
 
+    }
+    
+    private void ajouterCommande(HttpServletRequest request) throws SQLException{
+        DAO dao = new DAO(DataSourceFactory.getDataSource());
+        
+        List<String> produits = dao.listeProduit();
+        request.setAttribute("listeProduits", produits);
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
