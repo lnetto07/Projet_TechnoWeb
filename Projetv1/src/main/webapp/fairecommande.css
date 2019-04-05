@@ -70,11 +70,11 @@ h2 {
 
 .btn {
     
-    border: 1px solid darken(blue, 5%);
+    border: 1px (blue, 5%);
     padding: .5em 2em;
     color:black;
     margin-right: .5em;
-    box-shadow: inset 0px 1px 0px fadeout(white, 80%); 
+    box-shadow: inset 0px 1px 0px (white, 80%); 
   }
   
 .button {
