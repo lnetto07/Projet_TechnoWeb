@@ -5,6 +5,8 @@
  */
 package simplejdbc;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -15,15 +17,19 @@ public class Main {
     
      public static void main(String[] args) throws Exception {
         //DAO myDAO = new DAO(DataSourceFactory.getDataSource());
-        Date auj=new java.util.Date( );
-        int day=auj.getDay();
-        int mois=auj.getMonth();
-        int annee=auj.getYear();
-        Date d=new java.util.Date(annee,mois,day);
-        String date=d.toString();
-        System.out.println(day);
-        System.out.println(date);
-       
+//        Date auj=new java.util.Date( );
+//        int day=auj.getDay();
+//        int mois=auj.getMonth();
+//        int annee=auj.getYear();
+//        Date d=new java.util.Date(annee,mois,day);
+//        String date=d.toString();
+//        System.out.println(day);
+//        System.out.println(date);
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	Date date = new Date();
+        String auj=(String)dateFormat.format(date);
+	System.out.println(auj); 
+        
 
      }
      }

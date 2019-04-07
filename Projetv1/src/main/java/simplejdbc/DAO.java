@@ -5,9 +5,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,9 +30,12 @@ public class DAO {
 
     /**
      *
+     * @param email
+     * @param customer_id
      * @return le nombre d'enregistrements dans la table CUSTOMER
      * @throws DAOException
      */
+    
     public int loginCustomer(String email, int customer_id) throws DAOException {
         int result = -1;
 
@@ -228,7 +234,10 @@ public class DAO {
         }
     }
     
+    
+    
     //Méthodes DAO Client
+    
     //Methode DAO Client Obtenir la liste des commandes effctuées par un client à partir de son nom
     public List<OrderEntity> commandesExistantes(String clientName) throws SQLException {
         List<OrderEntity> commande = new LinkedList<>();
@@ -262,8 +271,8 @@ public class DAO {
     //Récupérer le max des num de commande pour en générer un lors d'une nouvelle commande
     public int numNewCommande() throws SQLException {
         String sql = "SELECT ORDER_NUM  FROM PURCHASE_ORDER ";
-        ArrayList<Integer> orderNum=new ArrayList<Integer>();
-        int max = 0;
+        ArrayList<Integer> orderNum=new ArrayList<>();
+        int max;
         try (Connection connection = myDataSource.getConnection();
                 Statement stmt = connection.createStatement();
                 ResultSet rs = stmt.executeQuery(sql)) {
@@ -299,8 +308,11 @@ public class DAO {
     // Méthode DAO Client:Modifier une commande
     //La commandes est choisit par son num et on peut modifier la quantité et la compagnie d'envoi.
     //La date de la commande change aussi pour être fixée à la date du jour
-    public OrderEntity modifCommande(int num, int qtt, FCompany fCompany, String date) throws SQLException {
+    public OrderEntity modifCommande(int num, int qtt, FCompany fCompany) throws SQLException {
         OrderEntity order = selectCommande(num);
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	Date auj = new Date();
+        String date=(String)dateFormat.format(auj);
         String sql = "UPDATE PURCHASE_ORDER SET ORDER_NUM=?, CUSTOMER_ID=?, PRODUCT_ID=?, QUANTITY=?, SHIPPING_COST=?, SALES_DATE=?, SHIPPING_DATE=?, FREIGHT_COMPANY=? WHERE ORDER_NUM=?";
         try (Connection connection = myDataSource.getConnection();
                 PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -333,7 +345,8 @@ public class DAO {
     }
 
     
-        // Méthodes DAO Administrateur
+    
+// Méthodes DAO Administrateur
     
     // Méthode DAO utile pour calculer un CA: récupérer le prix d'un produit à partir de son id  
     public float prixProduit(int id) throws SQLException {
@@ -373,7 +386,6 @@ public class DAO {
             return CA;
         }
     }
-
     
 // Méthode DAO admin: Calcul du chiffre d'affaires avec un Client   
 // fin et début au format AAAA-MM-JJ
@@ -397,7 +409,6 @@ public class DAO {
         }
     }
 
-    
     // Méthode DAO admin: Calcul du chiffre d'affaires avec dans une zone  
     // fin et début au format AAAA-MM-JJ
     public float CAZone(String state, String debut, String fin) throws SQLException {
