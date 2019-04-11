@@ -69,13 +69,13 @@ public class DAO {
     }
 
     //Methode DAO Client
-    public List<OrderEntity> commandesExistantes(String clientMail) throws SQLException {
+    public List<OrderEntity> commandesExistantes(String clientName) throws SQLException {
         List<OrderEntity> commande = new LinkedList<>();
         // Une requête SQL paramétrée
-        String sql = "SELECT * FROM PURCHASE_ORDER WHERE CUSTOMER_ID=(SELECT CUSTOMER_ID FROM CUSTOMER WHERE EMAIL=?) ";
+        String sql = "SELECT * FROM PURCHASE_ORDER WHERE CUSTOMER_ID=(SELECT CUSTOMER_ID FROM CUSTOMER WHERE NAME=?) ";
         try (Connection connection = myDataSource.getConnection();
                 PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setString(1, clientMail);
+            stmt.setString(1, clientName);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     // On récupère les champs nécessaires de l'enregistrement courant

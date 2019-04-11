@@ -44,11 +44,15 @@ public class OrderController extends HttpServlet {
                     request.getRequestDispatcher("test.jsp").forward(request, response);
 
                     break;
-                default:
+                case "supprimer":
                     supprimerCommande(request);
                     request.getRequestDispatcher("affiche.jsp").forward(request, response);
-
                     break;
+                case "modifier":
+                    modifierCommande(request);
+                    request.getRequestDispatcher("recapcommande.jsp").forward(request, response);
+                    break;
+
 
             }
         }
@@ -117,6 +121,28 @@ public class OrderController extends HttpServlet {
  private String findUserInSession(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         return (session == null) ? null : (String) session.getAttribute("userName");
+    }
+
+    private void modifierCommande(HttpServletRequest request) throws SQLException {
+      int idCommande = Integer.parseInt(request.getParameter("prodId"));
+      DAO dao = new DAO(DataSourceFactory.getDataSource());
+      OrderEntity commande= dao.selectCommande(idCommande);
+      ProductEntity p=dao.selectProductById(commande.getProductId());
+      float prix=p.getPrice();
+      request.setAttribute("prixProd1", prix);
+      request.setAttribute("numero",commande.getOrderId());
+      request.setAttribute("Produit",commande.getProductName(commande.getProductId()));
+      request.setAttribute("Quantite",commande.getQty());
+      request.setAttribute("Nom",(dao.selectNomById(commande.getCustomerId())));
+      request.setAttribute("IdProduit",commande.getProductId());
+      request.setAttribute("PrixProduits",commande.calculPrix(commande.getOrderId()));
+      request.setAttribute("Prixdenvoi",commande.getShipCost());
+      request.setAttribute("PrixProduits",commande.calculPrix(commande.getOrderId()));
+      request.setAttribute("CoutTotal",commande.calculPrixTot(commande.getOrderId()));
+      request.setAttribute("Datedecommande",commande.getSalesDate());
+      request.setAttribute("Datedenvoi",commande.getShipDate());
+     
+
     }
 
 }

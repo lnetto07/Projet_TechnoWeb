@@ -141,8 +141,9 @@ public class LoginController extends HttpServlet {
                 // On a trouvé la combinaison login / password
                 // On stocke l'information dans la session
                 HttpSession session = request.getSession(true); // démarre la session
-                session.setAttribute("userName", loginParam);
-                List<OrderEntity> commandeCli = dao.commandesExistantes(loginParam);
+                String nom = dao.selectNomByEmail(loginParam);
+                session.setAttribute("userName", nom);
+                List<OrderEntity> commandeCli = dao.commandesExistantes(nom);
                 request.setAttribute("listCommandes", commandeCli);
 
             } else // On positionne un message d'erreur pour l'afficher dans la JSP

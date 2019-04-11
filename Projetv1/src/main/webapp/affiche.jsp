@@ -67,10 +67,9 @@
 
                             out.println("<form action='OrderController' method='POST'>");
                             out.println("<input name='prodId' type='hidden' value='" + idCommande + "'>");
-
                             out.println("<button type='submit' class='btn' name='action' value='supprimer' >Supprimer</button>");
                             out.println("<td>");
-                            out.println("<button type='submit' class='btn'>Modifier</button>");
+                            out.println("<button type='submit' class='btn' name='action' value='modifier'>Modifier</button>");
                             out.println("</td>");
 
                             out.println("</form >");
