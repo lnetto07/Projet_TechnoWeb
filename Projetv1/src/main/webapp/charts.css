@@ -37,12 +37,21 @@ section div {
     
   }
 
-  .periode {
-    font-family: 'open sans', helvetica, arial, sans;
-    color : white;
-    
-    
-  }
+ .Client {
+  font-family: 'open sans', helvetica, arial, sans;
+  color : white;
+
+ }
+
+ .Zonegéographique {
+  font-family: 'open sans', helvetica, arial, sans;
+  color : white;
+ }
+ 
+ .Article {
+  font-family: 'open sans', helvetica, arial, sans;
+  color : white;
+ }
 
 
   header{
