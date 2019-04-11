@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -388,6 +389,17 @@ public class DAO {
         }
     }
     
+    //Méthode DAO admin: list des CA associé à chaque produit
+    public HashMap CAProduits(String debut, String fin) throws SQLException {
+        HashMap listCA=new HashMap();
+        List<String> produits=listeProduit();
+        for (String p: produits){
+            float CA =CAProduit(p,debut,fin);
+            listCA.put(p,CA);
+        }
+        return listCA;
+    }
+    
 // Méthode DAO admin: Calcul du chiffre d'affaires avec un Client   
 // fin et début au format AAAA-MM-JJ
     public float CAClient(String name, String debut, String fin) throws SQLException {
@@ -409,7 +421,17 @@ public class DAO {
             return CA;
         }
     }
-
+    
+    //Méthode DAO admin: list des CA associé à chaque client
+    public HashMap CAClients(String debut, String fin) throws SQLException {
+        HashMap listCA=new HashMap();
+        List<String> clients=listeClient();
+        for (String c: clients){
+            float CA =CAClient(c,debut,fin);
+            listCA.put(c,CA);
+        }
+        return listCA;
+    }
     // Méthode DAO admin: Calcul du chiffre d'affaires avec dans une zone  
     // fin et début au format AAAA-MM-JJ
     public float CAZone(String state, String debut, String fin) throws SQLException {
@@ -428,7 +450,17 @@ public class DAO {
             }
             return CA;
         }
-
+    }
+    
+    //Méthode DAO admin: list des CA associé à chaque état
+    public HashMap CAZones(String debut, String fin) throws SQLException {
+        HashMap listCA=new HashMap();
+        List<String> zones=listeState();
+        for (String z: zones){
+            float CA =CAZone(z,debut,fin);
+            listCA.put(z,CA);
+        }
+        return listCA;
     }
 
 }
