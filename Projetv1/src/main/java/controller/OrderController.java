@@ -144,6 +144,30 @@ public class OrderController extends HttpServlet {
      
 
     }
-
+    
+    private void validerAjout(HttpServletRequest request) throws SQLException{
+        DAO dao = new DAO(DataSourceFactory.getDataSource());
+        
+        String nomProd = request.getParameter("produit");
+        int qte = Integer.parseInt(request.getParameter("quantité"));
+        String comp = request.getParameter("compagnie");
+        int idProd = dao.selectIdProd(nomProd);
+        int idOrd = dao.numNewCommande();
+		
+		HttpSession session = request.getSession();
+        String nomCli = (String) session.getAttribute("userName");
+        int idCli = dao.selectIdClient(nomCli);
+        
+        OrderEntity o = new OrderEntity(idOrd, idCli, idProd, qte, 0, null,null, comp);
+                
+    }
+    
+    private void ajouterCommande(HttpServletRequest request) throws SQLException{
+        DAO dao = new DAO(DataSourceFactory.getDataSource());
+        
+        List<String> produits = dao.listeProduit();
+        request.setAttribute("listeProduits", produits);
+        
+    }
 }
 

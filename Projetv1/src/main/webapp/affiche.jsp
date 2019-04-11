@@ -20,7 +20,9 @@
             </div>
             <div class="listecomm">
                 <h3> Listes des commandes </h3>
-                <button type="submit" class="btn">Voir mes commandes</button>
+                <form action='OrderController' method='POST'>
+                    <button type="submit" class="btn" name="action" value="ajout">Ajouter une commande</button>
+                </form>
             </div>
             <table border ="0">
                 <thead>
@@ -67,9 +69,10 @@
 
                             out.println("<form action='OrderController' method='POST'>");
                             out.println("<input name='prodId' type='hidden' value='" + idCommande + "'>");
+
                             out.println("<button type='submit' class='btn' name='action' value='supprimer' >Supprimer</button>");
                             out.println("<td>");
-                            out.println("<button type='submit' class='btn' name='action' value='modifier'>Modifier</button>");
+                            out.println("<button type='submit' class='btn'>Modifier</button>");
                             out.println("</td>");
 
                             out.println("</form >");
