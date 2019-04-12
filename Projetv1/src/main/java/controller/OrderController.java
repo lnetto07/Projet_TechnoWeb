@@ -57,13 +57,15 @@ public class OrderController extends HttpServlet {
                     supprimerCommande(request);
                     request.getRequestDispatcher("affiche.jsp").forward(request, response);
                     break;
-                case "modifier":
+                case "modif":
                     modifierCommande(request);
                     request.getRequestDispatcher("recapcommande.jsp").forward(request, response);
                     break;
-                case "valider":
-                    
+                case "modifier":
+                    validerModif(request);
+                    request.getRequestDispatcher("test.jsp").forward(request, response);
                     break;
+
             }
         }
 
@@ -137,33 +139,20 @@ public class OrderController extends HttpServlet {
         int idCommande = Integer.parseInt(request.getParameter("prodId"));
         DAO dao = new DAO(DataSourceFactory.getDataSource());
         OrderEntity commande = dao.selectCommande(idCommande);
-        request.setAttribute("commande",commande);
+        request.setAttribute("commande", commande);
         ProductEntity p = dao.selectProductById(commande.getProductId());
-        float prix = p.getPrice();
-//        request.setAttribute("prixProd1", prix);
-//        request.setAttribute("numero", commande.getOrderId());
-//        request.setAttribute("Produit", commande.getProductName(commande.getProductId()));
-//        request.setAttribute("Quantite", commande.getQty());
         request.setAttribute("Nom", (dao.selectNomById(commande.getCustomerId())));
-//        request.setAttribute("IdProduit", commande.getProductId());
-//        request.setAttribute("PrixProduits", commande.calculPrix(commande.getOrderId()));
-//        request.setAttribute("Prixdenvoi", commande.getShipCost());
-//        request.setAttribute("PrixProduits", commande.calculPrix(commande.getOrderId()));
-//        request.setAttribute("CoutTotal", commande.calculPrixTot(commande.getOrderId()));
-//        request.setAttribute("Datedecommande", commande.getSalesDate());
-//        request.setAttribute("Datedenvoi", commande.getShipDate());
 
     }
 
     private void validerAjout(HttpServletRequest request) throws SQLException {
-        
-        
+
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate localDate = LocalDate.now();
         String today = dtf.format(localDate);
         LocalDate envoie = LocalDate.now().plusDays(7);
         String apres = dtf.format(envoie);
-        
+
         DAO dao = new DAO(DataSourceFactory.getDataSource());
         String nomProd = request.getParameter("produit");
         int qte = Integer.valueOf(request.getParameter("quantite"));
@@ -178,8 +167,6 @@ public class OrderController extends HttpServlet {
         List<OrderEntity> commandeCli = dao.commandesExistantes(nomCli);
         request.setAttribute("listCommandes", commandeCli);
 
-
-
     }
 
     private void ajouterCommande(HttpServletRequest request) throws SQLException {
@@ -187,6 +174,21 @@ public class OrderController extends HttpServlet {
 
         List<String> produits = dao.listeProduit();
         request.setAttribute("listeProduits", produits);
+
+    }
+
+    private void validerModif(HttpServletRequest request) throws SQLException {
+       int quantity = Integer.valueOf(request.getParameter("quantity"));
+        FCompany compagnie;
+        compagnie = FCompany.valueOf(request.getParameter("compagnie"));
+        int orderId = Integer.valueOf(request.getParameter("orderId"));
+
+       DAO dao = new DAO(DataSourceFactory.getDataSource());
+       dao.modifCommande(orderId, quantity, compagnie);
+        HttpSession session = request.getSession(false);
+        String nomCli = (String) session.getAttribute("userName");
+        List<OrderEntity> commandeCli = dao.commandesExistantes(nomCli);
+        request.setAttribute("listCommandes", commandeCli);
 
     }
 }

@@ -4,6 +4,7 @@
     Author     : Evelyne Rwalinda
 --%>
 
+<%@page import="simplejdbc.FCompany"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
@@ -33,6 +34,7 @@
             <div class="infocomm">
                 <h3> Information commande </h3>
                 <label for="numéro">Numéro : ${commande.getOrderId()}</label> 
+                <input name='orderId' type='hidden' value=${commande.getOrderId()}>
                 <br>
                 <br>
                 <label for="produit">Produit : ${commande.getProductName(commande.getProductId())}</label> 
@@ -41,17 +43,32 @@
                 <label for="idProduit">Id produit : ${commande.getProductId()} </label>  
                 <br>
                 <br>
-                <label for="quantité">Quantité :</label> <input type="number" id="quantite" value=${commande.getQty()} required> 
-                <input type="text" id="input"> oninput: <span id="result"></span>
-                <script>
+                <label for="quantité">Quantité :</label> <input type="text" name="quantity" value=${commande.getQty()} required> 
+<!--                <script>
                     quantite.oninput = function () {
-                        var p= (float) <%request.getAttribute("prixProd1");%>
+                        var p= (float) 
                         result.innerHTML = (p);
                     };
-                </script>
+                </script>-->
                 <br>
                 <br>
                 <label for="ncli">Nom client : ${Nom}</label>  
+                <br>
+                <br>
+                <label for="compagnie">Compagnie d'envoi : </label>
+                <select id="compagnie" name="compagnie">
+                            <%
+                                for (FCompany c : FCompany.values()) {
+                                    out.println("<option");
+                                    out.println(" selected='selected'>");
+                                    out.println(c);
+                                    out.println("</option>");
+
+                                }
+                            %>
+
+                            
+                        </select>
                 <br>
                 <br>
                 <label for="coutcom">Cout de la commande : ${commande.calculPrix(commande.getOrderId())}</label> 
@@ -74,7 +91,7 @@
 
 
             <div class="button">
-                <button type="submit" name='action' class="btn" value='submit'>Valider</button>
+                <button type="submit" name='action' class="btn" value='modifier'>Valider</button>
             </div>
         </form>
     </section>
