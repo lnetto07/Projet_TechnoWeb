@@ -14,7 +14,11 @@
     <body>
         <h1>Hello World!</h1>
         	<div style="color:red">${test}</div>
-                                
+             ${produit}   
+                          ${quantity}                   
+
+                                       ${compagnie}                   
+
 
     </body>
 </html>
