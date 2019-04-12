@@ -1,3 +1,4 @@
+<%@page import="simplejdbc.FCompany"%>
 <%@page import="simplejdbc.OrderEntity"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.Date" %>
@@ -32,6 +33,7 @@
                 <th>Prix</th>
                 <th>Date de commande</th>
                 <th>Date d'envoi</th>
+                <th>Compagnie d'envoie</th>
                 </thead>
                 <tbody>
                     <%
@@ -64,6 +66,11 @@
                             String d2 = e.getShipDate();
                             out.println(d2);
                             out.println("</td>");
+                             out.println("<td>");
+                            String comp = e.getFCompany().toString();
+                            out.println(comp);
+                            out.println("</td>");
+
 
                             out.println("<td>");
 

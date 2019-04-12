@@ -63,7 +63,7 @@ public class OrderController extends HttpServlet {
                     break;
                 case "modifier":
                     validerModif(request);
-                    request.getRequestDispatcher("test.jsp").forward(request, response);
+                    request.getRequestDispatcher("affiche.jsp").forward(request, response);
                     break;
 
             }
@@ -140,6 +140,7 @@ public class OrderController extends HttpServlet {
         DAO dao = new DAO(DataSourceFactory.getDataSource());
         OrderEntity commande = dao.selectCommande(idCommande);
         request.setAttribute("commande", commande);
+        request.setAttribute("compagnie",commande.getFCompany());
         ProductEntity p = dao.selectProductById(commande.getProductId());
         request.setAttribute("Nom", (dao.selectNomById(commande.getCustomerId())));
 

@@ -60,7 +60,11 @@
                             <%
                                 for (FCompany c : FCompany.values()) {
                                     out.println("<option");
-                                    out.println(" selected='selected'>");
+                                    String comp=(String) request.getAttribute("compagnie");
+                                    FCompany f=FCompany.valueOf(comp);
+                                    if(c==f)
+                                        out.println("selected='selected'");
+                                     out.println(">");
                                     out.println(c);
                                     out.println("</option>");
 
