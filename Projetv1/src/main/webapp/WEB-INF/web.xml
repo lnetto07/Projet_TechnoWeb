@@ -5,12 +5,12 @@
         <servlet-class>controller.LoginController</servlet-class>
         <!-- Les identifiants pour se connecter -->
         <init-param>
-            <param-name>login</param-name>
-            <param-value>untel</param-value>
+            <param-name>adminL</param-name>
+            <param-value>admin@admin.com</param-value>
         </init-param>
         <init-param>
-            <param-name>password</param-name>
-            <param-value>ABCD</param-value>
+            <param-name>adminP</param-name>
+            <param-value>admin</param-value>
         </init-param>
         <init-param>
             <param-name>userName</param-name>

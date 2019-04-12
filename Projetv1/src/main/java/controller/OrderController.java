@@ -7,6 +7,9 @@ package controller;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -47,6 +50,7 @@ public class OrderController extends HttpServlet {
                 case "ajouter":
                     validerAjout(request);
                     request.getRequestDispatcher("affiche.jsp").forward(request, response);
+                    //request.getRequestDispatcher("test.jsp").forward(request, response);
 
                     break;
                 case "supprimer":
@@ -57,7 +61,9 @@ public class OrderController extends HttpServlet {
                     modifierCommande(request);
                     request.getRequestDispatcher("recapcommande.jsp").forward(request, response);
                     break;
-
+                case "valider":
+                    
+                    break;
             }
         }
 
@@ -131,45 +137,49 @@ public class OrderController extends HttpServlet {
         int idCommande = Integer.parseInt(request.getParameter("prodId"));
         DAO dao = new DAO(DataSourceFactory.getDataSource());
         OrderEntity commande = dao.selectCommande(idCommande);
+        request.setAttribute("commande",commande);
         ProductEntity p = dao.selectProductById(commande.getProductId());
         float prix = p.getPrice();
-        request.setAttribute("prixProd1", prix);
-        request.setAttribute("numero", commande.getOrderId());
-        request.setAttribute("Produit", commande.getProductName(commande.getProductId()));
-        request.setAttribute("Quantite", commande.getQty());
+//        request.setAttribute("prixProd1", prix);
+//        request.setAttribute("numero", commande.getOrderId());
+//        request.setAttribute("Produit", commande.getProductName(commande.getProductId()));
+//        request.setAttribute("Quantite", commande.getQty());
         request.setAttribute("Nom", (dao.selectNomById(commande.getCustomerId())));
-        request.setAttribute("IdProduit", commande.getProductId());
-        request.setAttribute("PrixProduits", commande.calculPrix(commande.getOrderId()));
-        request.setAttribute("Prixdenvoi", commande.getShipCost());
-        request.setAttribute("PrixProduits", commande.calculPrix(commande.getOrderId()));
-        request.setAttribute("CoutTotal", commande.calculPrixTot(commande.getOrderId()));
-        request.setAttribute("Datedecommande", commande.getSalesDate());
-        request.setAttribute("Datedenvoi", commande.getShipDate());
+//        request.setAttribute("IdProduit", commande.getProductId());
+//        request.setAttribute("PrixProduits", commande.calculPrix(commande.getOrderId()));
+//        request.setAttribute("Prixdenvoi", commande.getShipCost());
+//        request.setAttribute("PrixProduits", commande.calculPrix(commande.getOrderId()));
+//        request.setAttribute("CoutTotal", commande.calculPrixTot(commande.getOrderId()));
+//        request.setAttribute("Datedecommande", commande.getSalesDate());
+//        request.setAttribute("Datedenvoi", commande.getShipDate());
 
     }
 
     private void validerAjout(HttpServletRequest request) throws SQLException {
+        
+        
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate localDate = LocalDate.now();
+        String today = dtf.format(localDate);
+        LocalDate envoie = LocalDate.now().plusDays(7);
+        String apres = dtf.format(envoie);
+        
         DAO dao = new DAO(DataSourceFactory.getDataSource());
-
         String nomProd = request.getParameter("produit");
-        request.setAttribute("produit", nomProd);
-       int qte = Integer.valueOf(request.getParameter("quantite"));
-               request.setAttribute("quantity", qte);
-
-       String comp = request.getParameter("compagnie");
-                      request.setAttribute("compagnie", comp);
-
+        int qte = Integer.valueOf(request.getParameter("quantite"));
+        String comp = request.getParameter("compagnie");
         int idProd = dao.selectIdProd(nomProd);
         int idOrd = dao.numNewCommande();
-	HttpSession session = request.getSession(false);
+        HttpSession session = request.getSession(false);
         String nomCli = (String) session.getAttribute("userName");
         int idCli = dao.selectIdClient(nomCli);
-       OrderEntity o = new OrderEntity(idOrd, idCli, idProd, qte, 0, null,null, comp);
-       dao.ajoutCommande(o);
+        OrderEntity o = new OrderEntity(idOrd, idCli, idProd, qte, 0, today, apres, comp);
+        dao.ajoutCommande(o);
         List<OrderEntity> commandeCli = dao.commandesExistantes(nomCli);
         request.setAttribute("listCommandes", commandeCli);
-       
-       
+
+
+
     }
 
     private void ajouterCommande(HttpServletRequest request) throws SQLException {

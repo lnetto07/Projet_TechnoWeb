@@ -29,19 +29,19 @@
             <div class="titre">
                 <h2>Commande 1</h2>
             </div>
-
+            <form action="<c:url value="OrderController" />" method="POST">
             <div class="infocomm">
                 <h3> Information commande </h3>
-                <label for="numéro">Numéro : ${numero}</label> 
+                <label for="numéro">Numéro : ${commande.getOrderId()}</label> 
                 <br>
                 <br>
-                <label for="produit">Produit : ${Produit}</label> 
+                <label for="produit">Produit : ${commande.getProductName(commande.getProductId())}</label> 
                 <br>
                 <br>
-                <label for="idProduit">Id produit : ${IdProduit} </label>  
+                <label for="idProduit">Id produit : ${commande.getProductId()} </label>  
                 <br>
                 <br>
-                <label for="quantité">Quantité :</label> <input type="number" id="quantite" value=${Quantite} required> 
+                <label for="quantité">Quantité :</label> <input type="number" id="quantite" value=${commande.getQty()} required> 
                 <input type="text" id="input"> oninput: <span id="result"></span>
                 <script>
                     quantite.oninput = function () {
@@ -54,19 +54,19 @@
                 <label for="ncli">Nom client : ${Nom}</label>  
                 <br>
                 <br>
-                <label for="coutcom">Cout de la commande : ${PrixProduits}</label> 
+                <label for="coutcom">Cout de la commande : ${commande.calculPrix(commande.getOrderId())}</label> 
                 <br>
                 <br>
-                <label for="coutdenvoi">Cout d'envoi : ${Prixdenvoi}</label> 
+                <label for="coutdenvoi">Cout d'envoi : ${commande.getShipCost()}</label> 
                 <br>
                 <br>
-                <label for="coutTotal">Cout total : ${CoutTotal}</label> 
+                <label for="coutTotal">Cout total : ${commande.calculPrixTot(commande.getOrderId())}</label> 
                 <br>
                 <br>
-                <label for="dateCom">Date de commande : ${Datedecommande}</label>  
+                <label for="dateCom">Date de commande : ${commande.getSalesDate()}</label>  
                 <br>
                 <br>
-                <label for="dateEnvoi">Date d'envoi : </label> <input type="text" value="${Datedenvoi}"  required> 
+                <label for="dateEnvoi">Date d'envoi : ${commande.getShipDate()}  <required> 
                 <br>
 
                 <br>
@@ -74,7 +74,7 @@
 
 
             <div class="button">
-                <button type="submit" class="btn" value='submit'>Valider</button>
+                <button type="submit" name='action' class="btn" value='submit'>Valider</button>
             </div>
         </form>
     </section>
