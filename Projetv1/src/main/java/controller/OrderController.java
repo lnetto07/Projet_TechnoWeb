@@ -63,7 +63,7 @@ public class OrderController extends HttpServlet {
                     break;
                 case "modifier":
                     validerModif(request);
-                    request.getRequestDispatcher("test.jsp").forward(request, response);
+                    request.getRequestDispatcher("affiche.jsp").forward(request, response);
                     break;
 
             }
