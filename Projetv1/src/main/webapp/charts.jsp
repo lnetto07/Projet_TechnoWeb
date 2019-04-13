@@ -54,7 +54,9 @@
                     </tr>
                 </thead>
             </table>
-
+            <form action='AdminController' method='POST'>
+                    <button type="submit" class="btn" name="action" value="produit">Comparer les chiffres d'affaires</button>
+            </form>
 
             <div id="graph1" style="width: 550px; height: 400px; margin: 5px">
             </div>
@@ -95,7 +97,9 @@
                     </tr>
                 </thead>
             </table>
-
+            <form action='AdminController' method='POST'>
+                    <button type="submit" class="btn" name="action" value="zone">Comparer les chiffres d'affaires</button>
+            </form>
 
             <div id="graph2" style="width: 550px; height: 400px; margin: 5px">
             </div>
@@ -136,6 +140,9 @@
                     </tr>
                 </thead>
             </table>
+            <form action='AdminController' method='POST'>
+                    <button type="submit" class="btn" name="action" value="client">Comparer les chiffres d'affaires</button>
+            </form>
 
 
             <div id="graph3" style="width: 550px; height: 400px; margin: 5px">
