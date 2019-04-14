@@ -15,6 +15,7 @@ import java.util.SortedSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,6 +29,7 @@ import simplejdbc.OrderEntity;
  *
  * @author Netto Léa
  */
+@WebServlet(name = "AdminController", urlPatterns = {"/AdminController"})
 public class AdminController extends HttpServlet {
 
     /**
@@ -50,18 +52,29 @@ public class AdminController extends HttpServlet {
             switch (action) {
                 case "client":
                     CAClient(request);
-                    request.getRequestDispatcher("chart.jsp").forward(request, response);
+                    request.getRequestDispatcher("charts.jsp").forward(request, response);
                     break;
                 case "produit":
                     CAProduit(request);
-                    request.getRequestDispatcher("chart.jsp").forward(request, response);
+                    request.getRequestDispatcher("charts.jsp").forward(request, response);
                     break;
                 case "zone":
                     CAZone(request);
                     request.getRequestDispatcher("chart.jsp").forward(request, response);
                     break;
+                default:
+
+            HttpSession session = request.getSession(false);
+            session.setAttribute("dated",request.getAttribute("debut"));
+            session.setAttribute("datef",request.getAttribute("fin"));
+            request.setAttribute("graph","oui");
+            request.getRequestDispatcher("googlePieChart.jsp").forward(request, response);
+           
+            
+                            break;
             }
         }
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -122,21 +135,28 @@ public class AdminController extends HttpServlet {
         String dateDebut = request.getParameter("débutC");
         String dateFin = request.getParameter("finC");
         DAO dao = new DAO(DataSourceFactory.getDataSource());
-        HashMap CAClients=dao.CAClients(dateDebut, dateFin);
-        request.setAttribute("Ca",CAClients);
-        Set clients= CAClients.keySet();
-        request.setAttribute("listeCli",clients);
-        
+        HashMap CAClients = dao.CAClients(dateDebut, dateFin);
+        request.setAttribute("Ca", CAClients);
+        Set clients = CAClients.keySet();
+        request.setAttribute("listeCli", clients);
+
     }
 
-    private void CAProduit(HttpServletRequest request) {
+    private void CAProduit(HttpServletRequest request) throws SQLException {
         // On termine la session
         HttpSession session = request.getSession(false);
         if (session != null) {
             session.invalidate();
         }
+        String debut = request.getParameter("debut");
+        String fin = request.getParameter("fin");
+        DAO dao = new DAO(DataSourceFactory.getDataSource());
+        HashMap liste = dao.CAProduits(debut, fin);
+        request.setAttribute("listeCA", liste);
+        request.setAttribute("graph", "1");
+
     }
-    
+
     private void CAZone(HttpServletRequest request) throws DAOException, SQLException {
         // Les paramètres transmis dans la requête
         String loginParam = request.getParameter("loginParam");
@@ -162,7 +182,7 @@ public class AdminController extends HttpServlet {
                 // On a trouvé la combinaison login / password
                 // On stocke l'information dans la session
                 HttpSession session = request.getSession(true); // démarre la session
-                String name=dao.selectNomByEmail(loginParam);
+                String name = dao.selectNomByEmail(loginParam);
                 session.setAttribute("userName", name);
                 List<OrderEntity> commandeCli = dao.commandesExistantes(loginParam);
                 request.setAttribute("listCommandes", commandeCli);
@@ -175,4 +195,3 @@ public class AdminController extends HttpServlet {
     }
 
 }
-
