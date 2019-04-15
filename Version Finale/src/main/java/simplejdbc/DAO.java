@@ -96,7 +96,7 @@ public class DAO {
                 String saleDate = rs.getString("SALES_DATE");
                 String freight = rs.getString("FREIGHT_COMPANY");
                 // On crée l'objet entité
-                o = new OrderEntity(num, idCustom, idProd, qtt, shipCost, shipDate, saleDate, freight);
+                o = new OrderEntity(num, idCustom, idProd, qtt, shipCost, saleDate, shipDate, freight);
             }
             return o;
         }
@@ -260,7 +260,7 @@ public class DAO {
                     String saleDate = rs.getString("SALES_DATE");
                     String freight = rs.getString("FREIGHT_COMPANY");
                     // On crée la commande
-                    OrderEntity o = new OrderEntity(num, idCustom, idProd, qtt, shipCost, shipDate, saleDate, freight);
+                    OrderEntity o = new OrderEntity(num, idCustom, idProd, qtt, shipCost, saleDate, shipDate, freight);
                     // On l'ajoute à la liste des commandes
                     commande.add(o);
                 }
@@ -326,7 +326,7 @@ public class DAO {
             stmt.setFloat(5, order.getShipCost());
             stmt.setString(6, date);
             stmt.setString(7, order.getShipDate());
-            stmt.setString(8, fCompany.toString().replace('_',' '));
+            stmt.setString(8, fCompany.toString());
             stmt.setInt(9, num);
             stmt.executeUpdate();
             order = selectCommande(num);
@@ -463,4 +463,27 @@ public class DAO {
         }
         return listCA;
     }
+
+    	public Map<String, Double> salesByCustomer() throws SQLException {
+		Map<String, Double> result = new HashMap<>();
+		String sql = "SELECT NAME, SUM(PURCHASE_COST * QUANTITY) AS SALES" +
+		"	      FROM CUSTOMER c" +
+		"	      INNER JOIN PURCHASE_ORDER o ON (c.CUSTOMER_ID = o.CUSTOMER_ID)" +
+		"	      INNER JOIN PRODUCT p ON (o.PRODUCT_ID = p.PRODUCT_ID)" +
+		"	      GROUP BY NAME";
+		try (Connection connection = myDataSource.getConnection(); 
+		     Statement stmt = connection.createStatement(); 
+		     ResultSet rs = stmt.executeQuery(sql)) {
+			while (rs.next()) {
+				// On récupère les champs nécessaires de l'enregistrement courant
+				String name = rs.getString("NAME");
+				double sales = rs.getDouble("SALES");
+				// On l'ajoute à la liste des résultats
+				result.put(name, sales);
+			}
+		}
+		return result;
+	}
+        
+
 }
