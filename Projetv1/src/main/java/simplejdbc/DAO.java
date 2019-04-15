@@ -96,7 +96,7 @@ public class DAO {
                 String saleDate = rs.getString("SALES_DATE");
                 String freight = rs.getString("FREIGHT_COMPANY");
                 // On crée l'objet entité
-                o = new OrderEntity(num, idCustom, idProd, qtt, shipCost, shipDate, saleDate, freight);
+                o = new OrderEntity(num, idCustom, idProd, qtt, shipCost, saleDate, shipDate, freight);
             }
             return o;
         }
@@ -260,7 +260,7 @@ public class DAO {
                     String saleDate = rs.getString("SALES_DATE");
                     String freight = rs.getString("FREIGHT_COMPANY");
                     // On crée la commande
-                    OrderEntity o = new OrderEntity(num, idCustom, idProd, qtt, shipCost, shipDate, saleDate, freight);
+                    OrderEntity o = new OrderEntity(num, idCustom, idProd, qtt, shipCost, saleDate, shipDate, freight);
                     // On l'ajoute à la liste des commandes
                     commande.add(o);
                 }
