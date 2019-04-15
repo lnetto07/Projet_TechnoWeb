@@ -28,8 +28,8 @@ import simplejdbc.DataSourceFactory;
  *
  * @author rbastide
  */
-@WebServlet(name = "salesByCustomer", urlPatterns = {"/salesByCustomer"})
-public class SalesByCustomerInJSON extends HttpServlet {
+@WebServlet(name = "CAbyZone", urlPatterns = {"/CAbyZone"})
+public class CAbyZone extends HttpServlet {
 
 	/**
 	 * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -48,7 +48,8 @@ public class SalesByCustomerInJSON extends HttpServlet {
 		try { HttpSession session = request.getSession(false);
             String dd=(String) session.getAttribute("dated");
             String df=(String) session.getAttribute("datef");
-			resultat.put("records", dao.CAProduits("2011-05-01","2011-05-30"));
+            
+			resultat.put("records", dao.CAZones(dd,df));
 		} catch (SQLException ex) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			resultat.put("records", Collections.EMPTY_LIST);

@@ -51,7 +51,7 @@ public class LoginController extends HttpServlet {
 
         } else {
             if (userName.equals("admin")) {
-                jspView = "charts.jsp";
+                jspView = "googlePieChart.jsp";
             } else {// L'utilisateur est connecté
                 // On choisit la page d'affichage
 

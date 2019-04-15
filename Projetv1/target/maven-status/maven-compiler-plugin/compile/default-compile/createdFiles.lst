@@ -2,8 +2,11 @@ controller\AdminController.class
 listeners\CountingUsers.class
 simplejdbc\DAOException.class
 filters\ProtectedPagesFilter.class
+controller\CAbyZone.class
+controller\CAbyClient.class
 simplejdbc\CustomerEntity.class
 simplejdbc\DAO.class
+controller\CAbyProduct.class
 controller\LoginController.class
 simplejdbc\Main.class
 simplejdbc\DataSourceFactory.class

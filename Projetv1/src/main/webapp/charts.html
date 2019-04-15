@@ -1,156 +1,160 @@
 <!DOCTYPE html>
 <html>
 
-    <head>
-        <meta charset="UTF-8" />
-        <title>Statistiques</title>
-        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js">
-        </script>
-        <script type="text/javascript">
-            google.charts.load('current', {packages: ['corechart']});
-        </script>
-        <link rel="stylesheet" media="screen" href="charts.css" type="text/css" />
-    </head>
+<head>
+  <meta charset="UTF-8" />
+  <title>Statistiques</title>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js">
+  </script>
+  <script type="text/javascript">
+    google.charts.load('current', { packages: ['corechart'] });     
+  </script>
+  <link rel="stylesheet" media="screen" href="charts.css" type="text/css" />
+</head>
 
-    <body>
+<body>
 
-        <section id="accueil">
-            <header>
-                <nav>
-                    <ul>
-                        <li><a href="#accueil">Accueil</a></li>
-                        <li><a href="#equipe">Mes commandes</a></li>
-                        <li><a href="#ressources">Faire une commande</a></li>
-                        <li><a href="#contact">Contact</a></li>
-                    </ul>
-                </nav>
-            </header>
-            <h1>STATISTIQUES</h1>
-            <table border="">
-                <thead>
-                    <tr>
-                        <th>
-                            <div class="periode">
-                                <label for="periode">Début :</label>
-                                <input type="date" name="debutP">
-                            </div>
-                        </th>
-                        <th>
-                            <div class="periode">
-                                <label for="periode">Fin :</label>
-                                <input type="date" name="finP">
-                            </div>
-                        </th>
+  <section id="accueil">
+    <header>
+      <nav>
+        <ul>
+          <li><a href="#accueil">Accueil</a></li>
+          <li><a href="#equipe">Mes commandes</a></li>
+          <li><a href="#ressources">Faire une commande</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </header>
+    <h1>STATISTIQUES</h1>
+    <table border="0">
+        <thead>
+          <tr>
+            <th>
+              <div class="periode">
+                <label for="periode">Début :</label>
+                <input type="date" name="date">
+              </div>
+            </th>
+            <th>
+              <div class="periode">
+                <label for="periode">Fin :</label>
+                <input type="date" name="date">
+              </div>
+            </th>
+            
+          </tr>
+        </thead>
+      </table>
 
-                    </tr>
-                </thead>
-            </table>
 
+    <div id="graph1" style="width: 550px; height: 400px; margin: 5px">
+    </div>
+    <script language="JavaScript">
+      function drawChart() {
 
-            <div id="graph1" style="width: 550px; height: 400px; margin: 5px">
+        var data = google.visualization.arrayToDataTable([
+          ['Produit', 'Chiffre d affaire'],
+          ['1', 900],
+          ['2', 1000],
+          ['3', 1170],
+
+        ]);
+
+        var options = { title: 'Chiffre d affaire en fonction de la catégorie d article' };
+
+        var chart = new google.visualization.BarChart(document.getElementById('graph1'));
+        chart.draw(data, options);
+      }
+      google.charts.setOnLoadCallback(drawChart);
+    </script>
+
+<table border="0">
+    <thead>
+      <tr>
+        <th>
+          <div class="periode">
+            <label for="periode">Début :</label>
+            <input type="date" name="date">
+          </div>
+        </th>
+        <th>
+          <div class="periode">
+            <label for="periode">Fin :</label>
+            <input type="date" name="date">
+          </div>
+        </th>
+        
+        
+      </tr>
+    </thead>
+  </table>
+  <div id="graph2" style="width: 550px; height: 400px; margin: 5px">
+    </div>
+    <script language="JavaScript">
+      function drawChart() {
+
+        var data = google.visualization.arrayToDataTable([
+          ['Zone géographique', 'Chiffre d affaire'],
+          ['1', 900],
+          ['2', 1000],
+          ['3', 1170],
+
+        ]);
+
+        var options = { title: 'Chiffre d affaire en fonction de la zone géographique' };
+
+        var chart = new google.visualization.BarChart(document.getElementById('graph2'));
+        chart.draw(data, options);
+      }
+      google.charts.setOnLoadCallback(drawChart);
+    </script>
+
+    <table border="0">
+      <thead>
+        <tr>
+          <th>
+            <div class="periode">
+              <label for="periode">Début :</label>
+              <input type="date" name="date">
             </div>
-            <script language="JavaScript">
-                function drawChart() {
-
-                    var data = google.visualization.arrayToDataTable([
-                        ['Produit', 'Chiffre d affaire'],
-                        ['1', 900],
-                        ['2', 1000],
-                        ['3', 1170],
-                    ]);
-
-                    var options = {title: 'Chiffre d affaire en fonction de la catégorie d article'};
-
-                    var chart = new google.visualization.BarChart(document.getElementById('graph1'));
-                    chart.draw(data, options);
-                }
-                google.charts.setOnLoadCallback(drawChart);
-            </script>
-
-            <table border="">
-                <thead>
-                    <tr>
-                        <th>
-                            <div class="periode">
-                                <label for="periode">Début :</label>
-                                <input type="date" name="debutZ">
-                            </div>
-                        </th>
-                        <th>
-                            <div class="periode">
-                                <label for="periode">Fin :</label>
-                                <input type="date" name="finZ">
-                            </div>
-                        </th>
-
-                    </tr>
-                </thead>
-            </table>
-
-
-            <div id="graph2" style="width: 550px; height: 400px; margin: 5px">
+          </th>
+          <th>
+            <div class="periode">
+              <label for="periode">Fin :</label>
+              <input type="date" name="date">
             </div>
-            <script language="JavaScript">
-                function drawChart() {
+          </th>
+          
+         
+          
+        </tr>
+      </thead>
+    </table>
+    <div id="graph3" style="width: 550px; height: 400px; margin: 5px">
+    </div>
+    <script language="JavaScript">
+      function drawChart() {
 
-                    var data = google.visualization.arrayToDataTable([
-                        ['Zone géographique', 'Chiffre d affaire'],
-                        ['1', 900],
-                        ['2', 1000],
-                        ['3', 1170],
-                    ]);
+        var data = google.visualization.arrayToDataTable([
+          ['Client', 'Chiffre d affaire'],
+          ['1', 900],
+          ['2', 1000],
+          ['3', 1170],
 
-                    var options = {title: 'Chiffre d affaire en fonction de la zone géographique'};
+        ]);
 
-                    var chart = new google.visualization.BarChart(document.getElementById('graph2'));
-                    chart.draw(data, options);
-                }
-                google.charts.setOnLoadCallback(drawChart);
-            </script>
+        var options = { title: 'Chiffre d affaire en fonction du client' };
 
-            <table border="">
-                <thead>
-                    <tr>
-                        <th>
-                            <div class="periode">
-                                <label for="periode">Début :</label>
-                                <input type="date" name="debutC">
-                            </div>
-                        </th>
-                        <th>
-                            <div class="periode">
-                                <label for="periode">Fin :</label>
-                                <input type="date" name="finC">
-                            </div>
-                        </th>
-
-                    </tr>
-                </thead>
-            </table>
+        var chart = new google.visualization.BarChart(document.getElementById('graph3'));
+        chart.draw(data, options);
+      }
+      google.charts.setOnLoadCallback(drawChart);
+    </script>
 
 
-            <div id="graph3" style="width: 550px; height: 400px; margin: 5px">
-            </div>
-            <script language="JavaScript">
-                function drawChart() {
-
-                    var data = google.visualization.arrayToDataTable([
-                        ['Client', 'Chiffre d affaire'],
-                        ['1', 900],
-                        ['2', 1000],
-                        ['3', 1170],
-                    ]);
-
-                    var options = {title: 'Chiffre d affaire en fonction du client'};
-
-                    var chart = new google.visualization.BarChart(document.getElementById('graph3'));
-                    chart.draw(data, options);
-                }
-                google.charts.setOnLoadCallback(drawChart);
-            </script>
-
-
-        </section>
-    </body>
+  </section>
+</body>
 
 </html>
+
+

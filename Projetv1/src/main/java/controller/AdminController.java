@@ -55,7 +55,8 @@ public class AdminController extends HttpServlet {
                     request.getRequestDispatcher("charts.jsp").forward(request, response);
                     break;
                 case "produit":
-                    CAProduit(request);
+                    //CAProduit(request);
+                    
                     request.getRequestDispatcher("charts.jsp").forward(request, response);
                     break;
                 case "zone":
@@ -65,8 +66,8 @@ public class AdminController extends HttpServlet {
                 default:
 
             HttpSession session = request.getSession(false);
-            session.setAttribute("dated",request.getAttribute("debut"));
-            session.setAttribute("datef",request.getAttribute("fin"));
+            session.setAttribute("dated",request.getParameter("debutP"));
+            session.setAttribute("datef",request.getParameter("finP"));
             request.setAttribute("graph","oui");
             request.getRequestDispatcher("googlePieChart.jsp").forward(request, response);
            
