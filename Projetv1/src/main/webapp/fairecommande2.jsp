@@ -62,14 +62,6 @@
                         </select>
                     </div>
                 </div>
-                <div class="prix">
-                    <h3>Prix total :</h3>
-                    <%
-                        String prixTot = (String) request.getAttribute("prixTotal");
-                        out.println(prixTot);
-                    %> 
-                    <button type="submit" class="btn" name='action' value ='calcul'>Calculer</button>
-                </div>
                 <div class="button">
                     <button type="submit" class="btn" name='action' value ='ajouter'>Valider</button>
                 </div>
