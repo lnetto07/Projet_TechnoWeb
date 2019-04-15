@@ -128,7 +128,15 @@
 </head>
 <body>
     <section id="accueil">
-
+<header>
+                <nav>
+                    <ul>
+                        <form action='OrderController' method='POST'>
+                            <li><button type='submit' name='action' value='logout'>Déconnexion</button></li>
+                        </form>
+                    </ul>
+                </nav>
+            </header>
         <h1>STATISTIQUES</h1>
 
         <table border="0">
@@ -159,11 +167,11 @@
 
 
         <!-- Le graphique apparaît ici -->
-        <div id="graph1" style="width: 900px; height: 800px; margin: 5px">
+        <div id="graph1" style="width: 800px; height: 800px; margin: 5px">
         </div>  
-        <div id="graph2" style="width: 550px; height: 400px; margin: 5px">
+        <div id="graph2" style="width: 800px; height: 800px; margin: 5px">
         </div>
-        <div id="graph3" style="width: 550px; height: 400px; margin: 5px">
+        <div id="graph3" style="width: 800px; height: 800px; margin: 5px">
         </div>
     </section>
 </body>

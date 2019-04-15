@@ -40,39 +40,49 @@ public class OrderController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
         String action = request.getParameter("action");
+        String userName = findUserInSession(request);
+        if (null == userName) { // L'utilisateur n'est pas connecté
+            // On choisit la page de login
+            request.getRequestDispatcher("login.jsp").forward(request, response);
 
-        if (null != action) {
-            switch (action) {
-                case "ajout":
-                    ajouterCommande(request);
-                    request.getRequestDispatcher("fairecommande.jsp").forward(request, response);
-                    break;
-                case "ajouter":
-                    validerAjout(request);
-                    request.getRequestDispatcher("affiche.jsp").forward(request, response);
-                    //request.getRequestDispatcher("test.jsp").forward(request, response);
-                    break;
-                case"accueil":
-                   HttpSession session = request.getSession(false);
-                   DAO dao = new DAO(DataSourceFactory.getDataSource());
-                    String nom =(String) session.getAttribute("userName");
-                    List<OrderEntity> commandeCli = dao.commandesExistantes(nom);
-                    request.setAttribute("listCommandes", commandeCli);
-                   request.getRequestDispatcher("affiche.jsp").forward(request, response);
-                    break; 
-                case "supprimer":
-                    supprimerCommande(request);
-                    request.getRequestDispatcher("affiche.jsp").forward(request, response);
-                    break;
-                case "modif":
-                    modifierCommande(request);
-                    request.getRequestDispatcher("modifierCommande.jsp").forward(request, response);
-                    break;
-                case "modifier":
-                    validerModif(request);
-                    request.getRequestDispatcher("affiche.jsp").forward(request, response);
-                    break;
+        } else {
+            if (null != action) {
+                switch (action) {
+                    case "ajout":
+                        ajouterCommande(request);
+                        request.getRequestDispatcher("fairecommande.jsp").forward(request, response);
+                        break;
+                    case "ajouter":
+                        validerAjout(request);
+                        request.getRequestDispatcher("affiche.jsp").forward(request, response);
+                        //request.getRequestDispatcher("test.jsp").forward(request, response);
+                        break;
+                    case "accueil":
+                        HttpSession session = request.getSession(false);
+                        DAO dao = new DAO(DataSourceFactory.getDataSource());
+                        String nom = (String) session.getAttribute("userName");
+                        List<OrderEntity> commandeCli = dao.commandesExistantes(nom);
+                        request.setAttribute("listCommandes", commandeCli);
+                        request.getRequestDispatcher("affiche.jsp").forward(request, response);
+                        break;
+                    case "supprimer":
+                        supprimerCommande(request);
+                        request.getRequestDispatcher("affiche.jsp").forward(request, response);
+                        break;
+                    case "modif":
+                        modifierCommande(request);
+                        request.getRequestDispatcher("modifierCommande.jsp").forward(request, response);
+                        break;
+                    case "modifier":
+                        validerModif(request);
+                        request.getRequestDispatcher("affiche.jsp").forward(request, response);
+                        break;
+                    case "logout":
+                        doLogout(request);
+                        request.getRequestDispatcher("login.jsp").forward(request, response);
 
+
+                }
             }
         }
 
@@ -147,7 +157,7 @@ public class OrderController extends HttpServlet {
         DAO dao = new DAO(DataSourceFactory.getDataSource());
         OrderEntity commande = dao.selectCommande(idCommande);
         request.setAttribute("commande", commande);
-        request.setAttribute("compagnie",commande.getFCompany());
+        request.setAttribute("compagnie", commande.getFCompany());
         ProductEntity p = dao.selectProductById(commande.getProductId());
         request.setAttribute("Nom", (dao.selectNomById(commande.getCustomerId())));
 
@@ -186,17 +196,25 @@ public class OrderController extends HttpServlet {
     }
 
     private void validerModif(HttpServletRequest request) throws SQLException {
-       int quantity = Integer.valueOf(request.getParameter("quantity"));
+        int quantity = Integer.valueOf(request.getParameter("quantity"));
         FCompany compagnie;
-        compagnie = FCompany.valueOf(request.getParameter("compagnie"));
+        compagnie = FCompany.valueOf(request.getParameter("compagnie").replace(" ", "_"));
         int orderId = Integer.valueOf(request.getParameter("orderId"));
 
-       DAO dao = new DAO(DataSourceFactory.getDataSource());
-       dao.modifCommande(orderId, quantity, compagnie);
+        DAO dao = new DAO(DataSourceFactory.getDataSource());
+        dao.modifCommande(orderId, quantity, compagnie);
         HttpSession session = request.getSession(false);
         String nomCli = (String) session.getAttribute("userName");
         List<OrderEntity> commandeCli = dao.commandesExistantes(nomCli);
         request.setAttribute("listCommandes", commandeCli);
 
+    }
+
+    private void doLogout(HttpServletRequest request) {
+        // On termine la session
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
     }
 }

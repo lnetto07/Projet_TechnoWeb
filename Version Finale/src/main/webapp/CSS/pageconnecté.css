@@ -102,7 +102,7 @@ li{
     list-style-type: none;
 
 }
-li a {
+li button {
 
     font-family:"Roboto", sans-serif;
     text-decoration:none; 
@@ -113,13 +113,21 @@ li a {
     padding-top:0px;
     padding-left:10px;
     padding-right:10px;
+    background-color: Transparent;
+    border: none;
 
 }
-li:not(:last-child) a{
+li:not(:last-child) button{
 
     border-right:1px;
     border-right-color:rgba(255,255,255,0.2);
     border-right-style:solid;
+    background-color: Transparent;
+    border-left: none;
+    border-bottom: none;
+    border-top:none;
+
+
 
 }
 nav{
@@ -134,3 +142,12 @@ nav ul{
     padding:0;
 
 }
+
+/*#nav1 {
+    background-color: Transparent;
+    background-repeat:no-repeat;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;
+    outline:none;
+}*/

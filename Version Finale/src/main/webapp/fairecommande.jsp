@@ -24,6 +24,7 @@
                             <li><button type="submit" name="action" value="accueil" id="nav1" >Accueil</button></li>
                             <li><button type="submit" name="action" value="accueil" id="nav2">Mes Commandes</button></li>
                             <li><button type="submit" name="action" value="ajout" id=" nav3">Faire une commande</button></li>
+                            <li><button type='submit' name='action' value='logout'>Déconnexion</button></li>
                         </form>
                     </ul>
                 </nav>
@@ -54,16 +55,16 @@
                     </div>
                     <div class="quantité">
                         <label for="quantité">Quantité</label> :
-                        <input type="text" name="quantite" placeholder="saisir la quantité" />
+                        <input type="text" name="quantite" pattern="[1-9][0-9]*" placeholder="saisir la quantité" required />
                     </div>
                     <div class="listecompagnie">
                         <label for="compagnie">Choisissez votre compagnie d'envoi :</label>
                         <select id="compagnie" name="compagnie">
                             <%
                                 for (FCompany c : FCompany.values()) {
-                                    out.println("<option");
-                                    out.println(" selected='selected'>");
-                                    out.println(c);
+                                    String c1=c.toString().replace("_"," ");
+                                    out.println("<option>");
+                                    out.println(c1);
                                     out.println("</option>");
 
                                 }

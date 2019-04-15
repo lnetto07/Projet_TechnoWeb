@@ -11,11 +11,25 @@
     <head>
         <meta charset="UTF-8" />
         <title>Vous êtes connecté</title>
-        <link rel="stylesheet" media="screen" href="pageconnecté.css" type="text/css" />
+        <link rel="stylesheet" media="screen" href="CSS/pageconnecté.css" type="text/css" />
     </head>
 
     <body>
+
         <section id="accueil">
+            <header>
+                <nav>
+                    <ul>
+                        <form action='OrderController' method='POST'>
+                            <li><button type="submit" name="action" value="accueil" id="nav1" >Accueil</button></li>
+                            <li><button type="submit" name="action" value="accueil" id="nav2">Mes Commandes</button></li>
+                            <li><button type="submit" name="action" value="ajout" id=" nav3">Faire une commande</button></li>
+                            <li><button type='submit' name='action' value='logout'>Déconnexion</button></li>
+                        </form>
+
+                    </ul>
+                </nav>
+            </header>
             <div class="titre">
                 <h2>Bonjour ${userName}</h2>
             </div>
@@ -66,11 +80,10 @@
                             String d2 = e.getShipDate();
                             out.println(d2);
                             out.println("</td>");
-                             out.println("<td>");
+                            out.println("<td>");
                             String comp = e.getFCompany().toString();
                             out.println(comp);
                             out.println("</td>");
-
 
                             out.println("<td>");
 
@@ -115,9 +128,7 @@
 
 </div>
 
-<form action="<c:url value="/"/>" method="POST"> 
-    <button type='submit' name='action' value='logout'>Déconnexion</button>
-</form>
+
 </section>
 </body>
 

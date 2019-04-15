@@ -34,12 +34,12 @@ public class DAOTest {
         assertEquals(name,"Small Bill Company");
     }
     
-    @Test
-    public void testSelectCommande() throws SQLException{
-        int num=10398001;
-        OrderEntity o=myDAO.selectCommande(num);
-        assertEquals(10,o.getQty());
-    }
+//    @Test
+//    public void testSelectCommande() throws SQLException{
+//        int num=10398001;
+//        OrderEntity o=myDAO.selectCommande(num);
+//        assertEquals(10,o.getQty());
+//    }
     
     @Test
     public void testSelectProdById() throws SQLException{

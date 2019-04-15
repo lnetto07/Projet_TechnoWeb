@@ -10,6 +10,6 @@ package simplejdbc;
  * @author Netto Léa
  */
 public enum FCompany {
-    Postissimo, JetLag
+    Postissimo, JetLag, Poney_Express, Slow_Snail, Western_Fast, We_deliver, Coastal_Freight, Southern_Delivery_Service,FR_Express
     
 }
