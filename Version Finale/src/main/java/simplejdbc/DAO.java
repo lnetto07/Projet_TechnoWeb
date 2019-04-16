@@ -326,7 +326,8 @@ public class DAO {
             stmt.setFloat(5, order.getShipCost());
             stmt.setString(6, date);
             stmt.setString(7, order.getShipDate());
-            stmt.setString(8, fCompany.toString().replace("_"," "));
+            stmt.setString(8, fCompany.toString().replace("_",
+                    " "));
             stmt.setInt(9, num);
             stmt.executeUpdate();
             order = selectCommande(num);

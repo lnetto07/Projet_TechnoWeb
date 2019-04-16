@@ -55,12 +55,12 @@ public class OrderController extends HttpServlet {
                     case "ajouter":
                         validerAjout(request);
                         request.getRequestDispatcher("affiche.jsp").forward(request, response);
-                        //request.getRequestDispatcher("test.jsp").forward(request, response);
                         break;
                     case "accueil":
                         HttpSession session = request.getSession(false);
                         DAO dao = new DAO(DataSourceFactory.getDataSource());
                         String nom = (String) session.getAttribute("userName");
+                        //On recupère les commandes a afficher
                         List<OrderEntity> commandeCli = dao.commandesExistantes(nom);
                         request.setAttribute("listCommandes", commandeCli);
                         request.getRequestDispatcher("affiche.jsp").forward(request, response);
@@ -81,20 +81,21 @@ public class OrderController extends HttpServlet {
                         doLogout(request);
                         request.getRequestDispatcher("login.jsp").forward(request, response);
 
-
                 }
             }
         }
 
     }
 
+    //Supprimer la commande
     private void supprimerCommande(HttpServletRequest request) throws SQLException {
         // Les paramètres transmis dans la requête
         int idCommande = Integer.parseInt(request.getParameter("prodId"));
         DAO dao = new DAO(DataSourceFactory.getDataSource());
         dao.supprimerCommande(idCommande);
-        String userName = findUserInSession(request);
 
+        String userName = findUserInSession(request);
+        //On recupère les commandes a afficher
         List<OrderEntity> commandeCli = dao.commandesExistantes(userName);
         request.setAttribute("listCommandes", commandeCli);
 
@@ -152,6 +153,7 @@ public class OrderController extends HttpServlet {
         return (session == null) ? null : (String) session.getAttribute("userName");
     }
 
+    //Afficher les infos de la commande à modifier
     private void modifierCommande(HttpServletRequest request) throws SQLException {
         int idCommande = Integer.parseInt(request.getParameter("prodId"));
         DAO dao = new DAO(DataSourceFactory.getDataSource());
@@ -163,6 +165,7 @@ public class OrderController extends HttpServlet {
 
     }
 
+    //Ajouter la commande
     private void validerAjout(HttpServletRequest request) throws SQLException {
 
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -186,6 +189,7 @@ public class OrderController extends HttpServlet {
         request.setAttribute("listCommandes", commandeCli);
 
     }
+//Afficher le form pour ajouter
 
     private void ajouterCommande(HttpServletRequest request) throws SQLException {
         DAO dao = new DAO(DataSourceFactory.getDataSource());
@@ -195,14 +199,16 @@ public class OrderController extends HttpServlet {
 
     }
 
+    //Valider la modification
     private void validerModif(HttpServletRequest request) throws SQLException {
         int quantity = Integer.valueOf(request.getParameter("quantity"));
         FCompany compagnie;
+        //Dans fCompagny les " " sont des "_" 
         compagnie = FCompany.valueOf(request.getParameter("compagnie").replace(" ", "_"));
         int orderId = Integer.valueOf(request.getParameter("orderId"));
-
         DAO dao = new DAO(DataSourceFactory.getDataSource());
         dao.modifCommande(orderId, quantity, compagnie);
+        //Recupération des commandes pour aller dans affiche.jsp
         HttpSession session = request.getSession(false);
         String nomCli = (String) session.getAttribute("userName");
         List<OrderEntity> commandeCli = dao.commandesExistantes(nomCli);

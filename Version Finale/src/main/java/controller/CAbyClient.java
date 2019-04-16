@@ -46,6 +46,7 @@ public class CAbyClient extends HttpServlet {
 		// Properties est une Map<clé, valeur> pratique pour générer du JSON
 		Properties resultat = new Properties();
 		try { HttpSession session = request.getSession(false);
+                    //On récupère les dates de début et de fin
             String dd=(String) session.getAttribute("dated");
             String df=(String) session.getAttribute("datef");
             

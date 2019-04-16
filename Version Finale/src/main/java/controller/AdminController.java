@@ -46,24 +46,31 @@ public class AdminController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, DAOException, SQLException {
 
-        // Quelle action a appelé cette servlet ?
+           //Verifie si l'utilisateur est connecté
         String userName = findUserInSession(request);
-        if (null == userName) { // L'utilisateur n'est pas connecté
+        //Si il n'est pas connecté ou n'est pas un admin
+        if (null == userName || !userName.equals("admin")) { 
             // On choisit la page de login
             request.getRequestDispatcher("login.jsp").forward(request, response);
 
         } else {
+            
             String action = request.getParameter("action");
             if (null != action) {
+                //Si il se déconnecte
                 if (action.equals("logout")) {
                     doLogout(request);
                     request.getRequestDispatcher("login.jsp").forward(request, response);
                 }
+                //Sinon on récupère les dates
                 HttpSession session = request.getSession(false);
                 session.setAttribute("dated", request.getParameter("debutP"));
                 session.setAttribute("datef", request.getParameter("finP"));
+                //Permet d'afficher dans la console de la page admin
+                request.setAttribute("dated", request.getParameter("debutP"));
+                request.setAttribute("datef", request.getParameter("finP"));
                 request.setAttribute("graph", "oui");
-                request.getRequestDispatcher("googlePieChart.jsp").forward(request, response);
+                request.getRequestDispatcher("charts.jsp").forward(request, response);
 
             
         }
@@ -137,70 +144,7 @@ public class AdminController extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-//    private void CAClient(HttpServletRequest request) throws DAOException, SQLException {
-//        // Les paramètres transmis dans la requête
-//        String dateDebut = request.getParameter("débutC");
-//        String dateFin = request.getParameter("finC");
-//        DAO dao = new DAO(DataSourceFactory.getDataSource());
-//        HashMap CAClients = dao.CAClients(dateDebut, dateFin);
-//        request.setAttribute("Ca", CAClients);
-//        Set clients = CAClients.keySet();
-//        request.setAttribute("listeCli", clients);
-//
-//    }
-//
-//    private void CAProduit(HttpServletRequest request) throws SQLException {
-//        // On termine la session
-//        HttpSession session = request.getSession(false);
-//        if (session != null) {
-//            session.invalidate();
-//        }
-//        String debut = request.getParameter("debut");
-//        String fin = request.getParameter("fin");
-//        DAO dao = new DAO(DataSourceFactory.getDataSource());
-//        HashMap liste = dao.CAProduits(debut, fin);
-//        request.setAttribute("listeCA", liste);
-//        request.setAttribute("graph", "1");
-//
-//    }
-//
-//    private void CAZone(HttpServletRequest request) throws DAOException, SQLException {
-//        // Les paramètres transmis dans la requête
-//        String loginParam = request.getParameter("loginParam");
-//        String passwordParam = request.getParameter("passwordParam");
-//
-//        DAO dao = new DAO(DataSourceFactory.getDataSource());
-//        String adL = getInitParameter("adminL");
-//        String adP = getInitParameter("adminP");
-//        if (loginParam.equals(adL)) {
-//            if (passwordParam.equals(adP)) {
-//
-//                HttpSession session = request.getSession(true); // démarre la session
-//                session.setAttribute("userName", "admin");
-//
-//            } else {
-//                request.setAttribute("errorMessage", "Login/Password incorrect");
-//            }
-//
-//        } else {
-//            int pass = dao.loginCustomer(loginParam, Integer.parseInt(passwordParam));
-//
-//            if (pass == (Integer.parseInt(passwordParam))) {
-//                // On a trouvé la combinaison login / password
-//                // On stocke l'information dans la session
-//                HttpSession session = request.getSession(true); // démarre la session
-//                String name = dao.selectNomByEmail(loginParam);
-//                session.setAttribute("userName", name);
-//                List<OrderEntity> commandeCli = dao.commandesExistantes(loginParam);
-//                request.setAttribute("listCommandes", commandeCli);
-//
-//            } else // On positionne un message d'erreur pour l'afficher dans la JSP
-//            {
-//                request.setAttribute("errorMessage", "Login/Password incorrect");
-//            }
-//        }
-//    }
-//    
+  
     private String findUserInSession(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         return (session == null) ? null : (String) session.getAttribute("userName");

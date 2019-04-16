@@ -21,9 +21,9 @@
                 <nav>
                     <ul>
                         <form action='OrderController' method='POST'>
-                            <li><button type="submit" name="action" value="accueil" id="nav1" >Accueil</button></li>
-                            <li><button type="submit" name="action" value="accueil" id="nav2">Mes Commandes</button></li>
-                            <li><button type="submit" name="action" value="ajout" id=" nav3">Faire une commande</button></li>
+                            <li><button type="submit" name="action" value="accueil">Accueil</button></li>
+                            <li><button type="submit" name="action" value="accueil">Mes Commandes</button></li>
+                            <li><button type="submit" name="action" value="ajout">Faire une commande</button></li>
                             <li><button type='submit' name='action' value='logout'>Déconnexion</button></li>
                         </form>
                     </ul>
@@ -37,8 +37,9 @@
                     <div class="listeprod">
                         <label for="produit">Choisissez votre produit :</label>
                         <select id="produit" name="produit">
-                            
+
                             <%
+                                //Recuperation de la liste des produits depuis l'OrderController
                                 List<String> listeProduits = (List<String>) request.getAttribute("listeProduits");
 
                                 for (String p : listeProduits) {
@@ -50,7 +51,7 @@
                                 }
                             %>
 
-                            
+
                         </select>
                     </div>
                     <div class="quantité">
@@ -61,8 +62,10 @@
                         <label for="compagnie">Choisissez votre compagnie d'envoi :</label>
                         <select id="compagnie" name="compagnie">
                             <%
+                                //Recuperation des valeurs des compagnies depuis la classe FCompagny
                                 for (FCompany c : FCompany.values()) {
-                                    String c1=c.toString().replace("_"," ");
+                                    //Dans la classe FCompagny les " " sont des "_"
+                                    String c1 = c.toString().replace("_", " ");
                                     out.println("<option>");
                                     out.println(c1);
                                     out.println("</option>");
@@ -70,7 +73,6 @@
                                 }
                             %>
 
-                            
                         </select>
                     </div>
                 </div>

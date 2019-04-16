@@ -32,10 +32,12 @@
             <div class="titre">
                 <h2>Commande 1</h2>
             </div>
+            <!--On récupère le commande depuis l'orderController attribute commande -->
             <form action="<c:url value="OrderController" />" method="POST">
                 <div class="infocomm">
                     <h3> Information commande </h3>
                     <label for="numéro">Numéro : ${commande.getOrderId()}</label> 
+                    <!--Permet de récuperer le num de la commande dans le controller pour la modifier -->
                     <input name='orderId' type='hidden' value=${commande.getOrderId()}>
                     <br>
                     <br>
@@ -55,9 +57,11 @@
                     <label for="compagnie">Compagnie d'envoi : </label>
                     <select id="compagnie" name="compagnie">
                         <%
+                            //On récupère la liste de Fcompany dans la liste déroulante
                             for (FCompany c : FCompany.values()) {
                                 out.println("<option");
                                 String comp = (String) request.getAttribute("compagnie");
+                                //Dans la classe les " " sont des "_"
                                 comp = comp.replace(" ", "_");
                                 FCompany f = FCompany.valueOf(comp);
                                 if (c == f) {

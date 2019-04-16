@@ -122,8 +122,10 @@ public class LoginController extends HttpServlet {
         String passwordParam = request.getParameter("passwordParam");
 
         DAO dao = new DAO(DataSourceFactory.getDataSource());
+        //web xml
         String adL = getInitParameter("adminL");
         String adP = getInitParameter("adminP");
+        //Si c'est un admin
         if (loginParam.equals(adL)) {
             if (passwordParam.equals(adP)) {
 
@@ -135,14 +137,15 @@ public class LoginController extends HttpServlet {
             }
 
         } else {
+            //Si c'est un client
             int pass = dao.loginCustomer(loginParam, Integer.parseInt(passwordParam));
-
             if (pass == (Integer.parseInt(passwordParam))) {
                 // On a trouvé la combinaison login / password
                 // On stocke l'information dans la session
                 HttpSession session = request.getSession(true); // démarre la session
                 String nom = dao.selectNomByEmail(loginParam);
                 session.setAttribute("userName", nom);
+                //On récupère la liste des commandes existantes pour les afficher
                 List<OrderEntity> commandeCli = dao.commandesExistantes(nom);
                 request.setAttribute("listCommandes", commandeCli);
 

@@ -17,9 +17,8 @@
 		<div style="color:red">${errorMessage}</div>
 
 		<form action="<c:url value="/" />" method="POST"> <!-- l'action par défaut est l'URL courant, qui va rappeler la servlet -->
-			login (admin@admin.com) :<input type="text" title="Username" placeholder="Identifiant" name='loginParam' /> <br>
-			password (admin): <input type="password" title="username" placeholder="Mot de passe" name='passwordParam' /> <br>
-			<!--<input type='submit' name='action' value='login'>-->
+			login (admin@admin.com) :<input type="text" title="Username" placeholder="Identifiant" name='loginParam' required/> <br>
+			password (admin): <input type="password" title="username" placeholder="Mot de passe" name='passwordParam' required /> <br>
                         <button type="submit" class="btn" name='action' value='login'>Connexion</button>
 		</form>
 		<!-- On montre le nombre d'utilisateurs connectés -->

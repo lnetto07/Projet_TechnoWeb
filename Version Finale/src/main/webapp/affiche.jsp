@@ -21,9 +21,9 @@
                 <nav>
                     <ul>
                         <form action='OrderController' method='POST'>
-                            <li><button type="submit" name="action" value="accueil" id="nav1" >Accueil</button></li>
-                            <li><button type="submit" name="action" value="accueil" id="nav2">Mes Commandes</button></li>
-                            <li><button type="submit" name="action" value="ajout" id=" nav3">Faire une commande</button></li>
+                            <li><button type="submit" name="action" value="accueil">Accueil</button></li>
+                            <li><button type="submit" name="action" value="accueil">Mes Commandes</button></li>
+                            <li><button type="submit" name="action" value="ajout">Faire une commande</button></li>
                             <li><button type='submit' name='action' value='logout'>Déconnexion</button></li>
                         </form>
 
@@ -50,7 +50,9 @@
                 <th>Compagnie d'envoie</th>
                 </thead>
                 <tbody>
+
                     <%
+                        //Afficher les commandes
                         List<OrderEntity> listeCommandes = (List<OrderEntity>) request.getAttribute("listCommandes");
 
                         for (OrderEntity e : listeCommandes) {
@@ -59,61 +61,60 @@
                             int idCommande = e.getOrderId();
                             out.println(idCommande);
                             out.println("</td>");
+
                             out.println("<td>");
                             int idProduct = e.getProductId();
                             String name = e.getProductName(idProduct);
                             out.println(name);
                             out.println("</td>");
+
                             out.println("<td>");
                             int q = e.getQty();
                             out.println(q);
                             out.println("</td>");
+
                             out.println("<td>");
                             float prix = e.calculPrixTot(idCommande);
                             out.println(prix);
                             out.println("</td>");
+
                             out.println("<td>");
                             String d1 = e.getSalesDate();
                             out.println(d1);
                             out.println("</td>");
+
                             out.println("<td>");
                             String d2 = e.getShipDate();
                             out.println(d2);
                             out.println("</td>");
+
                             out.println("<td>");
                             String comp = e.getFCompany().toString();
                             out.println(comp);
                             out.println("</td>");
 
                             out.println("<td>");
-
                             out.println("<form action='OrderController' method='POST'>");
                             out.println("<input name='prodId' type='hidden' value='" + idCommande + "'>");
-
+                            
                             out.println("<button type='submit' class='btn' name='action' value='supprimer' >Supprimer</button>");
+                            out.println("</td>");
+                            
                             out.println("<td>");
                             out.println("<button type='submit' class='btn' name='action' value='modif'>Modifier</button>");
                             out.println("</td>");
-
+                            
                             out.println("</form >");
-
-                            out.println("</td>");
-
                             out.println("</tr>");
-
                         }
-
-
                     %>
 
             </table> 
         </tbody>
     </table>
-
-
-
-    <p id="suppression"></p>
+    
     <script>
+        //Confirmer la suppression, n'a pas été mis en place
         function myFunction() {
             var txt;
             if (confirm("Confirmez vous la suppression de votre commande ?")) {
